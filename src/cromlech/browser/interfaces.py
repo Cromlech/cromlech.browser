@@ -22,22 +22,6 @@ class IRenderer(Interface):
         """
 
 
-class IBaseClasses(Interface):
-    View = Attribute("Base class for browser views.")
-
-
-class IDirectives(Interface):
-
-    def request(interface):
-        """Define on which request a component is registered.
-        This can be used to narrow to a skin type.
-        """
-
-    def view(view):
-        """Define on which view a viewlet manager/viewlet is registered.
-        """
-
-
 class IView(Interface):
     """Grok views all provide this interface."""
 
