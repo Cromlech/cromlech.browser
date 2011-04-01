@@ -50,3 +50,7 @@ class ISecuredItem(Interface):
 class IViewlet(Interface):
     """
     """
+
+class ILayout(IRenderer):
+    """Layout view.
+    """
