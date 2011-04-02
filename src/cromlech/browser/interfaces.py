@@ -35,6 +35,7 @@ class IView(IRenderer):
         returns a response object with the body and headers set
         """
 
+
 class ISecuredItem(Interface):
     """
     """
@@ -45,24 +46,25 @@ class ILayout(IRenderer):
     """
 
 
-class IComponent(interface.Interface):
+class IComponent(Interface):
     """A named component
     
     This is intended to be a generic mechanism for composition mechanism
     """
-    identifier = interface.Attribute(u"Component id")
-    title = interface.Attribute(u"Component title")
+    identifier = Attribute(u"Component id")
+    title = Attribute(u"Component title")
 
     def clone(new_identifier=None):
         """Return a clone of the new component, with identifier
         new_identifier if it is not None.
         """
 
-class ICollection(interface.Interface):
+
+class ICollection(Interface):
     """Support to manage a collection of ordered named components.
     """
     
-    type = interface.Attribute(
+    type = Attribute(
         u"Interface restricting the type of component")
 
     def append(component):
@@ -118,11 +120,17 @@ class ICollection(interface.Interface):
         """Return the numbre of components.
         """
 
-class IViewlet(IComponent, IRenderer):
+
+class IManager(Interface):
+    components = Attribute("")
+
+
+class IViewlet(IRenderer):
     """a viewlet is a component rendering a small part of the global view
     driven by a manager
     """
 
-class IViewletManager(ICollection, IRenderer):
+
+class IViewletManager(IManager, IRenderer):
     """compose a set of viewlet together and render in a more global view
     """
