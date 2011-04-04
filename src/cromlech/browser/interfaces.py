@@ -55,7 +55,7 @@ class IViewSlot(IRenderer):
     view = Attribute("Renderer on which the slot is called.")
 
 
-class ITemplates(Interface):
+class ITemplate(Interface):
     """a page template"""
 
     def render(component):
