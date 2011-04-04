@@ -5,7 +5,7 @@ from zope.interface import Interface, Attribute
 
 class IRenderer(Interface):
     """An object meant to render something.
-    
+
     Most of the time, it gets an object and a request and returns
     a response but may also return raw data.
     """
@@ -24,7 +24,7 @@ class IRenderer(Interface):
 
 
 class IHTTPRenderer(IRenderer):
-    """
+    """A renderer returning an HTTPResponse
     """
 
     def __call__():
@@ -33,11 +33,16 @@ class IHTTPRenderer(IRenderer):
 
 
 class ILayout(IHTTPRenderer):
+    """A layout renders common content of pages and place view and
+    slot rendering inside
+    """
     context = Attribute("Object that the view presents.")
     request = Attribute("Request that the view was looked up with.")
 
 
 class IView(IHTTPRenderer):
+    """The view return content representation
+    """
     context = Attribute("Object that the view presents.")
     request = Attribute("Request that the view was looked up with.")
 
@@ -48,3 +53,10 @@ class IViewSlot(IRenderer):
     context = Attribute("Object that the view presents.")
     request = Attribute("Request that the view was looked up with.")
     view = Attribute("Renderer on which the slot is called.")
+
+
+class ITemplates(Interface):
+    """a page template"""
+
+    def render(component):
+        """Renders the given component"""

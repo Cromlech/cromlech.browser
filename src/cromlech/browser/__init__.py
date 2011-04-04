@@ -1,3 +1,3 @@
 # Package.
 
-from cromlech.browser.interfaces import IRenderer, IView, IViewlet
+from cromlech.browser.interfaces import IRenderer, IView, IViewlet, ITemplate
