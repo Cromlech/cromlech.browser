@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from zope.interface import Interface, Attribute, implements
+from zope.interface import Interface, Attribute
 
 
 class IRenderer(Interface):
@@ -11,11 +11,11 @@ class IRenderer(Interface):
     """
 
     def update(*args, **kwargs):
-        """prepares the rendering
+        """Prepares the rendering
         """
 
     def render():
-        """returns the raw data
+        """Returns the raw data
         """
 
     def __call__():
@@ -27,12 +27,10 @@ class IView(IRenderer):
     """Grok views all provide this interface"""
 
     context = Attribute('context', "Object that the view presents.")
-
     request = Attribute('request', "Request that the view was looked up with.")
 
     def __call__():
-        """
-        returns a response object with the body and headers set
+        """Returns a response object with the body and headers set.
         """
 
 
