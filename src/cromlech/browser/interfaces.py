@@ -9,6 +9,7 @@ class IRenderer(Interface):
     Most of the time, it gets an object and a request and returns
     a response but may also return raw data.
     """
+
     def namespace():
         """A dict representing the values accessible by the templates.
         """
@@ -22,18 +23,28 @@ class IRenderer(Interface):
         """
 
 
-class ILayout(IRenderer):
-    """Global layout view.
+class IHTTPRenderer(IRenderer):
     """
-
-
-class IView(IRenderer):
-    """Grok views all provide this interface.
     """
-
-    context = Attribute('context', "Object that the view presents.")
-    request = Attribute('request', "Request that the view was looked up with.")
 
     def __call__():
         """Returns a response object with the body and headers set.
         """
+
+
+class ILayout(IHTTPRenderer):
+    context = Attribute("Object that the view presents.")
+    request = Attribute("Request that the view was looked up with.")
+
+
+class IView(IHTTPRenderer):
+    context = Attribute("Object that the view presents.")
+    request = Attribute("Request that the view was looked up with.")
+
+
+class IViewSlot(IRenderer):
+    """A fragment of a view, acting as an aggregator of sub-renderers.
+    """
+    context = Attribute("Object that the view presents.")
+    request = Attribute("Request that the view was looked up with.")
+    view = Attribute("Renderer on which the slot is called.")
