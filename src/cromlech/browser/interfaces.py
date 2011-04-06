@@ -18,7 +18,7 @@ class IRenderer(Interface):
         """Prepares the rendering.
         """
 
-    def render():
+    def render(*args, **kwargs):
         """Returns the raw data.
         """
 
@@ -27,7 +27,7 @@ class IHTTPRenderer(IRenderer):
     """A renderer returning an HTTPResponse
     """
 
-    def __call__():
+    def __call__(*args, **kwargs):
         """Returns a response object with the body and headers set.
         """
 
