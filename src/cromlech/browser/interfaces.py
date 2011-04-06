@@ -56,7 +56,16 @@ class IViewSlot(IRenderer):
 
 
 class ITemplate(Interface):
-    """a page template"""
+    """a template"""
 
     def render(component):
         """Renders the given component"""
+
+
+class IURLResolver(Interface):
+    context = Attribute("Object that the needs to be resolved into an URL.")
+    request = Attribute("Request used to resolve the URL.")
+
+    def absolute():
+        """Returns the absolute URL of the context component, if possible.
+        """
