@@ -45,6 +45,7 @@ class IView(IHTTPRenderer):
     """
     context = Attribute("Object that the view presents.")
     request = Attribute("Request that the view was looked up with.")
+    response = Attribute("Response to be returned as a result of the call.")
 
 
 class IViewSlot(IRenderer):
