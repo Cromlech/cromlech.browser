@@ -26,7 +26,6 @@ class IRenderer(Interface):
 class IHTTPRenderer(IRenderer):
     """A renderer returning an HTTPResponse
     """
-
     def __call__(*args, **kwargs):
         """Returns a response object with the body and headers set.
         """
@@ -57,16 +56,16 @@ class IViewSlot(IRenderer):
 
 
 class ITemplate(Interface):
-    """a template"""
-
+    """a template
+    """
     def render(component):
         """Renders the given component"""
 
 
 class IURLResolver(Interface):
-    context = Attribute("Object that the needs to be resolved into an URL.")
-    request = Attribute("Request used to resolve the URL.")
-
-    def absolute():
-        """Returns the absolute URL of the context component, if possible.
+    """Component in charge of resolving an object into an URL.
+    """
+    def __str__():
+        """Returns the URL of a component, if possible. Else, it
+        raises a KeyError, precising what is missing for the resolution.
         """
