@@ -70,10 +70,19 @@ class IURLResolver(Interface):
         raises a KeyError, precising what is missing for the resolution.
         """
 
+
 class ITraverser(Interface):
     """An interface to traverse using a namespace eg. ++mynamespace++myid
     """
-    
+
     def traverse(namespace, identifier):
         """Do the traversing of namespace searching for identifier
         """
+
+
+class IHTTPException(Interface):
+    code = Attribute("HTTP code.")
+
+
+class IRedirect(IHTTPException):
+    location = Attribute("Location of the redirect.")
