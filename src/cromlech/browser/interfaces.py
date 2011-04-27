@@ -69,3 +69,11 @@ class IURLResolver(Interface):
         """Returns the URL of a component, if possible. Else, it
         raises a KeyError, precising what is missing for the resolution.
         """
+
+
+class IHTTPException(Interface):
+    code = Attribute("HTTP code.")
+
+
+class IRedirect(IHTTPException):
+    location = Attribute("Location of the redirect.")
