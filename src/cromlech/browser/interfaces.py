@@ -71,6 +71,15 @@ class IURLResolver(Interface):
         """
 
 
+class ITraverser(Interface):
+    """An interface to traverse using a namespace eg. ++mynamespace++myid
+    """
+
+    def traverse(namespace, identifier):
+        """Do the traversing of namespace searching for identifier
+        """
+
+
 class IHTTPException(Interface):
     code = Attribute("HTTP code.")
 
