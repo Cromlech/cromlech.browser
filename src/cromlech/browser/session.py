@@ -19,3 +19,11 @@ def setSession(session=None):
 
 def getSession():
     return sessioninfo.session
+
+# register it as a global cleanup to zope.testing
+try:
+    from zope.testing.cleanup import addCleanUp
+except ImportError:
+    pass
+else:
+    addCleanUp(setSession)
