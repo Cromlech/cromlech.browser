@@ -35,7 +35,7 @@ class TestLayout(TestRenderer):
     """A trivial conformance to ILayout for testing"""
     implements(ILayout)
 
-    def init(self, context=None, request=None):
+    def __init__(self, context=None, request=None):
         self.context = context
         self.request = request
 
@@ -46,7 +46,7 @@ class TestView(TestHTTPRenderer):
 
     responseFactory = TestResponse
 
-    def init(self, context=None, request=None):
+    def __init__(self, context=None, request=None):
         self.context = context
         self.request = request
 
