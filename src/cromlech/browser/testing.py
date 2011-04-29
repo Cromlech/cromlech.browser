@@ -4,7 +4,7 @@
 import sys
 from BeautifulSoup import BeautifulStoneSoup
 from cromlech.browser import IRenderer, IHTTPRenderer, IView, ILayout
-from cromlech.io.testing.response import TestResponse
+from cromlech.io.testing import TestResponse
 from optparse import OptionParser
 from zope.interface import implements
 
