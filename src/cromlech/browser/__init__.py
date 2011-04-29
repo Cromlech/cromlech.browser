@@ -1,6 +1,6 @@
 # component definitions
 from cromlech.browser.interfaces import (
-    IRenderer, IHTTPRenderer, ILaayout, IView, IViewSlot,
+    IRenderer, IHTTPRenderer, ILayout, IView, IViewSlot,
     ITemplate, ITraverser)
 
 # directives
