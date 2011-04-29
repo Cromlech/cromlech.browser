@@ -1,8 +1,54 @@
 # -*- coding: utf-8 -*-
+"""tests helpers"""
 
-from BeautifulSoup import BeautifulStoneSoup
-from optparse import OptionParser
 import sys
+from BeautifulSoup import BeautifulStoneSoup
+from cromlech.browser import IRenderer, IHTTPRenderer, IView, ILayout
+from cromlech.io.testing.response import TestResponse
+from optparse import OptionParser
+from zope.interface import implements
+
+
+class TestRenderer(object):
+    """A trivial conformance to IRenderer for testing"""
+    implements(IRenderer)
+
+    def namespace(self):
+        return dict()
+
+    def update(self, *args, **kwargs):
+        pass
+
+    def render(self, *args, **kwargs):
+        return ""
+
+
+class TestHTTPRenderer(TestRenderer):
+    """A trivial conformance to IHTTPRenderer for testing"""
+    implements(IHTTPRenderer)
+
+    def __call__(self, *args, **kwargs):
+        pass
+
+
+class TestLayout(TestRenderer):
+    """A trivial conformance to ILayout for testing"""
+    implements(ILayout)
+
+    def init(self, context=None, request=None):
+        self.context = context
+        self.request = request
+
+
+class TestView(TestHTTPRenderer):
+    """A trivial conformance to IView for testing"""
+    implements(IView)
+
+    responseFactory = TestResponse
+
+    def init(self, context=None, request=None):
+        self.context = context
+        self.request = request
 
 
 class XMLSoup(BeautifulStoneSoup):
@@ -11,29 +57,6 @@ class XMLSoup(BeautifulStoneSoup):
         """We don't want to 'clean' the DOM.
         """
         pass
-
-
-def xmlindent():
-    """Indent an XML file.
-
-    Can be used in emacs on your buffer with C-x h C-u M-S | path to
-    the script Enter.
-    """
-    parser = OptionParser()
-    (options, files) = parser.parse_args()
-
-    if not files:
-        input = ''
-        data = sys.stdin.read()
-        while data:
-            input += data
-            data = sys.stdin.read()
-        print XMLSoup(input).prettify()
-        return
-
-    for filename in files:
-        with open(filename, 'r') as input:
-            print XMLSoup(input.read()).prettify()
 
 
 def XMLDiff(xml1, xml2):
