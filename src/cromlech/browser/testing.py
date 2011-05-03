@@ -50,6 +50,17 @@ class TestView(TestHTTPRenderer):
         self.context = context
         self.request = request
 
+    def update(self):
+        self.response = self.responseFactory()
+
+    def render(self):
+        raise NotImplementedError('You need to implement your own')
+
+    def __call__(self):
+        self.update()
+        self.response.write(self.render())
+        return self.response
+
 
 class XMLSoup(BeautifulStoneSoup):
 
