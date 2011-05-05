@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-"""tests helpers"""
-
-import sys
+"""tests helpers.
+"""
+import difflib
 from BeautifulSoup import BeautifulStoneSoup
 from cromlech.browser import IRenderer, IHTTPRenderer, IView, ILayout
 from cromlech.io.testing import TestResponse
-from optparse import OptionParser
 from zope.interface import implements
 
 
@@ -85,8 +84,8 @@ def XMLDiff(xml1, xml2):
     pretty_xml1 = XMLSoup(xml1.strip()).prettify()
     pretty_xml2 = XMLSoup(xml2.strip()).prettify()
     if pretty_xml1 != pretty_xml2:
-        return ['XML differ:\n-expected\n+actual\n',] + \
-               list(difflib.unified_diff(
-            pretty_xml1.splitlines(True),
-            pretty_xml2.splitlines(True), n=2))[2:]
+        return (['XML differ:\n-expected\n+actual\n'] +
+                list(difflib.unified_diff(
+                    pretty_xml1.splitlines(True),
+                    pretty_xml2.splitlines(True), n=2))[2:])
     return None

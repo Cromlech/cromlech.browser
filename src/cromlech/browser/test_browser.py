@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import pytest
-import martian
-import martian.testing
 from cromlech import browser
 from zope.interface import Interface, verify
 

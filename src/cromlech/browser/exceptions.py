@@ -10,7 +10,7 @@ class HTTPException(Exception):
 
 class ResponseRedirect(HTTPException):
     implements(IRedirect)
-    
+
     code = 303
 
     def __init__(self, location):

@@ -6,13 +6,11 @@ version = '0.1'
 install_requires = [
     'setuptools',
     'martian',
-    'zope.component',
     'zope.interface',
     ]
 
 tests_require = [
     'cromlech.io',
-    'zope.testing',
     'BeautifulSoup==3.1.0.1'
     ]
 
