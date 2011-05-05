@@ -16,7 +16,7 @@ tests_require = [
 
 setup(name='cromlech.browser',
       version=version,
-      description="",
+      description="Cromlech Web Framework browser components definitions.",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       classifiers=[
