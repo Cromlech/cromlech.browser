@@ -11,6 +11,8 @@ install_requires = [
     ]
 
 tests_require = [
+    'cromlech.io',
+    'zope.testing',
     'BeautifulSoup==3.1.0.1'
     ]
 
@@ -22,10 +24,10 @@ setup(name='cromlech.browser',
       classifiers=[
         "Programming Language :: Python",
         ],
-      keywords='',
-      author='',
-      author_email='',
-      url='',
+      keywords='Cromlech Dolmen Framework',
+      author='The Dolmen team',
+      author_email='dolmen@list.dolmen-project.org',
+      url='http://gitweb.dolmen-project.org/',
       license='ZPL',
       packages=find_packages('src', exclude=['ez_setup']),
       package_dir={'': 'src'},

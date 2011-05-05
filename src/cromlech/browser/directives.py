@@ -9,20 +9,23 @@ from cromlech.browser.interfaces import IViewSlot
 
 
 def default_view_name(factory, module=None, **data):
-    """A view is, by default registered under its lowercase name."""
+    """A view is, by default registered under its lowercase name.
+    """
     return factory.__name__.lower()
 
 
 class view(martian.Directive):
     """specify which kind of view an component
-    (eg. viewlet or slot) applies to"""
+    (eg. viewlet or slot) applies to.
+    """
     scope = martian.CLASS_OR_MODULE
     store = martian.ONCE
     default = Interface
 
 
 class slot(martian.Directive):
-    """specify which kind of slot a component (eg. viewlet) is part of"""
+    """specify which kind of slot a component (eg. viewlet) is part of.
+    """
     scope = martian.CLASS_OR_MODULE
     store = martian.ONCE
     default = IViewSlot

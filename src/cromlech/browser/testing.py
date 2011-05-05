@@ -10,7 +10,8 @@ from zope.interface import implements
 
 
 class TestRenderer(object):
-    """A trivial conformance to IRenderer for testing"""
+    """A trivial conformance to IRenderer for testing.
+    """
     implements(IRenderer)
 
     def namespace(self):
@@ -24,15 +25,17 @@ class TestRenderer(object):
 
 
 class TestHTTPRenderer(TestRenderer):
-    """A trivial conformance to IHTTPRenderer for testing"""
+    """A trivial conformance to IHTTPRenderer for testing.
+    """
     implements(IHTTPRenderer)
 
     def __call__(self, *args, **kwargs):
         pass
 
 
-class TestLayout(TestRenderer):
-    """A trivial conformance to ILayout for testing"""
+class TestLayout(TestHTTPRenderer):
+    """A trivial conformance to ILayout for testing.
+    """
     implements(ILayout)
 
     def __init__(self, context=None, request=None):
@@ -41,22 +44,24 @@ class TestLayout(TestRenderer):
 
 
 class TestView(TestHTTPRenderer):
-    """A trivial conformance to IView for testing"""
+    """A trivial conformance to IView for testing.
+    """
     implements(IView)
 
+    response = None
     responseFactory = TestResponse
 
     def __init__(self, context=None, request=None):
         self.context = context
         self.request = request
 
-    def update(self):
+    def update(self, *args, **kwargs):
         self.response = self.responseFactory()
 
-    def render(self):
+    def render(self, *args, **kwargs):
         raise NotImplementedError('You need to implement your own')
 
-    def __call__(self):
+    def __call__(self, *args, **kwargs):
         self.update()
         self.response.write(self.render())
         return self.response
