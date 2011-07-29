@@ -1,7 +1,10 @@
-from setuptools import setup, find_packages
-import os
+# -*- coding: utf-8 -*-
 
-version = '0.1a1'
+import os
+from setuptools import setup, find_packages
+
+
+version = '0.1'
 
 install_requires = [
     'setuptools',
@@ -32,9 +35,9 @@ setup(name='cromlech.browser',
       namespace_packages=['cromlech',],
       include_package_data=True,
       zip_safe=False,
-      tests_require = tests_require,
-      install_requires = install_requires,
-      extras_require = {'test': tests_require},
+      tests_require=tests_require,
+      install_requires=install_requires,
+      extras_require={'test': tests_require},
       entry_points="""
       # -*- Entry points: -*-
       """,

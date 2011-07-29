@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from cromlech import browser
+from cromlech.browser import testing
 from zope.interface import Interface, verify
 
 
 def test_renderer():
     assert verify.verifyClass(
-        browser.IRenderer, browser.testing.TestRenderer)
+        browser.IRenderer, testing.TestRenderer)
 
-    renderer = browser.testing.TestRenderer()
+    renderer = testing.TestRenderer()
 
     assert verify.verifyObject(browser.IRenderer, renderer)
     assert renderer.namespace() == {}
@@ -18,25 +19,25 @@ def test_renderer():
 def test_http_renderer():
     assert browser.IHTTPRenderer.isOrExtends(browser.IRenderer)
     assert verify.verifyClass(
-        browser.IHTTPRenderer, browser.testing.TestHTTPRenderer)
+        browser.IHTTPRenderer, testing.TestHTTPRenderer)
 
-    renderer = browser.testing.TestHTTPRenderer()
+    renderer = testing.TestHTTPRenderer()
     assert verify.verifyObject(browser.IHTTPRenderer, renderer)
 
 
 def test_layout():
     assert browser.ILayout.isOrExtends(browser.IHTTPRenderer)
-    assert verify.verifyClass(browser.ILayout, browser.testing.TestLayout)
+    assert verify.verifyClass(browser.ILayout, testing.TestLayout)
 
-    layout = browser.testing.TestLayout()
+    layout = testing.TestLayout()
     assert verify.verifyObject(browser.ILayout, layout)
 
 
 def test_view():
     assert browser.IView.isOrExtends(browser.IHTTPRenderer)
-    assert verify.verifyClass(browser.IView, browser.testing.TestView)
+    assert verify.verifyClass(browser.IView, testing.TestView)
 
-    view = browser.testing.TestView()
+    view = testing.TestView()
     assert verify.verifyObject(browser.IView, view)
 
 

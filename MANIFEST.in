@@ -1,2 +1,3 @@
-recursive-include src/cromlech/browser *.txt *.py
+include README.txt
+recursive-include src *.txt *.py
 recursive-include docs *.txt
