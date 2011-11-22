@@ -86,3 +86,7 @@ class IHTTPException(Interface):
 
 class IRedirect(IHTTPException):
     location = Attribute("Location of the redirect.")
+
+
+class IAllowedLanguages(Interface):
+    languages = Attribute('list of allowed languages')

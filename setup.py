@@ -10,6 +10,7 @@ install_requires = [
     'setuptools',
     'martian',
     'zope.interface',
+    'zope.i18n',
     ]
 
 tests_require = [
