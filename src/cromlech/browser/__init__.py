@@ -1,7 +1,7 @@
 # component definitions
 from cromlech.browser.interfaces import (
     IRenderer, IHTTPRenderer, ILayout, IView, IViewSlot,
-    ITemplate, ITraverser, IURLResolver, IAllowedLanguages)
+    ITemplate, ITraverser, IURLResolver)
 
 # directives
 from cromlech.browser.directives import view, slot, default_view_name
@@ -13,6 +13,3 @@ from cromlech.browser.session import getSession, setSession
 from cromlech.browser.interfaces import IHTTPException, IRedirect
 from cromlech.browser.exceptions import (
     HTTPException, ResponseRedirect, TemporaryRedirect, PermanentRedirect)
-
-# i18n elements
-from cromlech.browser.i18n import negotiate
