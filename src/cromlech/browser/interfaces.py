@@ -1,6 +1,30 @@
 # -*- coding: utf-8 -*-
 
+from cromlech.io import IRequest, IResponse
 from zope.interface import Interface, Attribute
+
+
+class IHTTPRequest(IRequest):
+    """A specialisation of an `IRequest`, defining a HTTP request.
+    This kind of request is usually used by webservices, websites or
+    other interoperable applications/components.
+    """
+    application_url = Attribute("Application URL.")
+    body = Attribute("Body of the request.")
+    charset = Attribute("Body of the request.")
+    environment = Attribute("Environment of the request.")
+    form = Attribute("Parsed GET or POST data.")
+    method = Attribute("Method of the request.")
+    script_name = Attribute("Name of the script root.")
+
+
+class IHTTPResponse(IResponse):
+    """A specialisation of an `IResponse`, defining a response in an HTTP
+    context, most probably a response for a web browser request or such.
+    """
+    charset = Attribute("Body of the request.")
+    headers = Attribute("headers of the response.")
+    status = Attribute("Status including the code and the message.")
 
 
 class IRenderer(Interface):

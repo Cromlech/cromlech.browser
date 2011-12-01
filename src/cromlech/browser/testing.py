@@ -3,9 +3,80 @@
 """
 import difflib
 from BeautifulSoup import BeautifulStoneSoup
-from cromlech.browser import IRenderer, IHTTPRenderer, IView, ILayout
-from cromlech.io.testing import TestResponse
+from cromlech.browser import IHTTPRenderer, IHTTPRequest, IHTTPResponse
+from cromlech.browser import IRenderer, IView, ILayout
 from zope.interface import implements
+
+
+REDIRECTION = {
+    300: 'Multiple Choices',
+    301: 'Moved Permanently',
+    302: 'Found',
+    303: 'See Other',
+    304: 'Not Modified',
+    305: 'Use Proxy',
+    307: 'Temporary Redirect',
+    310: 'Too many Redirect',
+    }
+
+
+class TestHTTPRequest(object):
+    implements(IHTTPRequest)
+
+    form = {}
+    body = ''
+    application_url = 'http://localhost'
+    method = 'GET'
+    charset = 'UTF-8'
+    script_name = ''
+
+    def __init__(self, form=None, environment=None, path='/', **kw):
+        if environment is None:
+            environment = {}
+
+        if form is None:
+            form = {}
+
+        self.body = ''
+        self.form = form
+        self.script_name = ''
+        self.environment = environment
+        self.path = path
+        self.__dict__.update(kw)
+
+
+class TestHTTPResponse(object):
+    implements(IHTTPResponse)
+
+    charset = ''
+    status_int = 200
+    status = '200 - OK'
+    body = ''
+
+    def __init__(self, charset=None, headers=None):
+        self.headers = headers or {}
+        self.charset = charset or 'UTF-8'
+
+    def redirect(self, url, status=302, trusted=False):
+        """Sets the response for a redirect.
+        """
+        if not status in REDIRECTION:
+            raise NotImplementedError('This is not a redirection')
+
+        self.status_int = status
+        self.status = "%s - %s" % (status, REDIRECTION[status])
+        self.headers['Location'] = url
+
+    def write(self, data=None):
+        """Writes data to the response.
+        """
+        self.body += data
+
+    def __str__(self):
+        return self.body
+
+    def __iter__(self):
+        return iter([self.body])
 
 
 class TestRenderer(object):
@@ -48,7 +119,7 @@ class TestView(TestHTTPRenderer):
     implements(IView)
 
     response = None
-    responseFactory = TestResponse
+    responseFactory = TestHTTPResponse
 
     def __init__(self, context=None, request=None):
         self.context = context

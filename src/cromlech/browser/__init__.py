@@ -1,7 +1,7 @@
 # component definitions
 from cromlech.browser.interfaces import (
     IRenderer, IHTTPRenderer, ILayout, IView, IViewSlot,
-    ITemplate, ITraverser)
+    ITemplate, ITraverser, IHTTPRequest, IHTTPResponse)
 
 # directives
 from cromlech.browser.directives import view, slot, default_view_name

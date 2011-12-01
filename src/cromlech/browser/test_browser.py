@@ -1,8 +1,74 @@
 # -*- coding: utf-8 -*-
 
+import pytest
 from cromlech import browser
 from cromlech.browser import testing
 from zope.interface import Interface, verify
+
+
+def test_request():
+    assert verify.verifyClass(
+        browser.IHTTPRequest, browser.testing.TestHTTPRequest)
+
+    request = browser.testing.TestHTTPRequest()
+
+    assert verify.verifyObject(browser.IHTTPRequest, request)
+    assert request.path == '/'
+    assert request.body == ''
+    assert request.charset == 'UTF-8'
+    assert request.method == 'GET'
+    assert request.application_url == 'http://localhost'
+    assert request.form == {}
+
+    request = browser.testing.TestHTTPRequest(
+        path='/test', method='POST', form={'test': 1})
+
+    assert verify.verifyObject(browser.IHTTPRequest, request)
+    assert request.path == '/test'
+    assert request.body == ''
+    assert request.charset == 'UTF-8'
+    assert request.method == 'POST'
+    assert request.application_url == 'http://localhost'
+    assert request.form == {'test': 1}
+
+
+def test_response():
+    assert verify.verifyClass(
+        browser.IHTTPResponse, browser.testing.TestHTTPResponse)
+
+    response = browser.testing.TestHTTPResponse()
+    assert verify.verifyObject(browser.IHTTPResponse, response)
+    assert response.body == ''
+    assert response.headers == {}
+    assert response.charset == 'UTF-8'
+    assert response.status == '200 - OK'
+    assert response.status_int == 200
+
+    response = browser.testing.TestHTTPResponse()
+    response.write('something')
+    response.write(' and something else')
+    assert response.body == 'something and something else'
+
+    response.redirect('somewhere')
+    assert response.headers == {'Location': 'somewhere'}
+    assert response.status == '302 - Found'
+    assert response.status_int == 302
+
+    response.redirect('somewhere', status=305)
+    assert response.headers == {'Location': 'somewhere'}
+    assert response.status == '305 - Use Proxy'
+    assert response.status_int == 305
+
+    response.redirect('somewhere', status=310)
+    assert response.headers == {'Location': 'somewhere'}
+    assert response.status == '310 - Too many Redirect'
+    assert response.status_int == 310
+
+    with pytest.raises(NotImplementedError):
+        response.redirect('somewhere', status=404)
+        response.redirect('somewhere', status='quack')
+        response.redirect('somewhere', status=200)
+        response.redirect('somewhere', status=None)
 
 
 def test_renderer():
