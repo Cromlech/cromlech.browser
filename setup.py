@@ -14,7 +14,7 @@ install_requires = [
 
 tests_require = [
     'cromlech.io',
-    'BeautifulSoup==3.1.0.1'
+    'BeautifulSoup>=3.2',
     ]
 
 setup(name='cromlech.browser',
