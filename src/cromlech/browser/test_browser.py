@@ -33,8 +33,6 @@ def test_request():
 
 
 def test_response():
-    import pytest
-    pytest.set_trace()
     assert verify.verifyClass(
         browser.IHTTPResponse, testing.TestHTTPResponse)
 
@@ -51,26 +49,45 @@ def test_response():
     response.write(' and something else')
     assert response.body == 'something and something else'
 
-    response.redirect('somewhere')
+    response = browser.redirect_response(
+        testing.TestHTTPResponse, 'somewhere')
     assert response.headers == {'Location': 'somewhere'}
     assert response.status == '302 - Found'
     assert response.status_int == 302
 
-    response.redirect('somewhere', status=305)
+    response = browser.redirect_response(
+        testing.TestHTTPResponse, 'somewhere', code=305)
     assert response.headers == {'Location': 'somewhere'}
     assert response.status == '305 - Use Proxy'
     assert response.status_int == 305
 
-    response.redirect('somewhere', status=310)
+    response = browser.redirect_response(
+        testing.TestHTTPResponse, 'somewhere', code=310)
     assert response.headers == {'Location': 'somewhere'}
     assert response.status == '310 - Too many Redirect'
     assert response.status_int == 310
 
+    response = browser.redirect_response(
+        testing.TestHTTPResponse, 'somewhere', code=307, **{'Dummy': 1})
+    assert response.headers == {'Dummy': 1, 'Location': 'somewhere'}
+    assert response.status == '307 - Temporary Redirect'
+    assert response.status_int == 307
+
+    response = browser.redirect_response(
+        testing.TestHTTPResponse, 'somewhere', code=302, **{'Location': '/'})
+    assert response.headers == {'Location': 'somewhere'}
+    assert response.status == '302 - Found'
+    assert response.status_int == 302
+
     with pytest.raises(NotImplementedError):
-        response.redirect('somewhere', status=404)
-        response.redirect('somewhere', status='quack')
-        response.redirect('somewhere', status=200)
-        response.redirect('somewhere', status=None)
+        browser.redirect_response(
+            testing.TestHTTPResponse, 'somewhere', code=404)
+        browser.redirect_response(
+            testing.TestHTTPResponse, 'somewhere', code=500)
+        browser.redirect_response(
+            testing.TestHTTPResponse, 'somewhere', code=200)
+        browser.redirect_response(
+            testing.TestHTTPResponse, 'somewhere', code='quack')
 
 
 def test_renderer():

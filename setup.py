@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 version = '0.3a1'
 
 install_requires = [
-    'cromlech.io >= 0.1a1',
+    'cromlech.io >= 0.2a1',
     'setuptools',
     'martian',
     'zope.interface',

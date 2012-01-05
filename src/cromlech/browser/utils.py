@@ -14,5 +14,5 @@ def redirect_response(responseFactory, url, code=302, **additional_headers):
         headers.update(additional_headers)
     headers['Location'] = url
 
-    status = REDIRECTION[status]
+    status = "%s - %s" % (code, REDIRECTION[code])
     return responseFactory(status=status, headers=headers)

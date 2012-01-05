@@ -1,10 +1,23 @@
 Changelog
 =========
 
-0.2 (2011-12-19)
+0.3a1 (2012-05-01)
 ------------------
 
-Changed requirements for BeautifulSoup to an existing version
+- Using now the new definitions from the ``cromlech.io`` split, introducing
+  a more specific request and response, respectively : `IHTTPRequest` and 
+  `IHTTPResponse`.
+
+- Changed the way a redirection is done : this is no longer a defined
+  class method. A new util function is provided to replace it. It creates
+  a new response instead of modifying an existing one.
+
+
+0.2 (2011-12-19)
+----------------
+
+- Changed requirements for BeautifulSoup to an existing version
+
 
 0.1 (2011-07-29)
 ----------------
