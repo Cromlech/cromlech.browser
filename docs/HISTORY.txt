@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.2 (2011-12-19)
+------------------
+
+Changed requirements for BeautifulSoup to an existing version
+
 0.1 (2011-07-29)
 ----------------
 
