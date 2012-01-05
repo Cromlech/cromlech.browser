@@ -9,10 +9,12 @@ from cromlech.browser.directives import view, slot, default_view_name
 # hooks
 from cromlech.browser.session import getSession, setSession
 
-# exceptions
-from cromlech.browser.interfaces import IHTTPException, IRedirect
-from cromlech.browser.exceptions import (
-    HTTPException, ResponseRedirect, TemporaryRedirect, PermanentRedirect)
+# exceptions definition
+from cromlech.browser.interfaces import IHTTPException, IHTTPRedirect
 
 # utilities
-from cromlech.browser.utils import redirect_response
+from cromlech.browser.utils import (
+    redirect_response, redirect_exception_response)
+
+# exceptions expostion
+from cromlech.browser import exceptions

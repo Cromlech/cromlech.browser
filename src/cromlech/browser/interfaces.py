@@ -105,8 +105,9 @@ class ITraverser(Interface):
 
 
 class IHTTPException(Interface):
-    code = Attribute("HTTP code.")
+    code = Attribute("Status code")
+    title = Attribute("Status phrase. Eg: 'OK'")
 
 
-class IRedirect(IHTTPException):
+class IHTTPRedirect(IHTTPException):
     location = Attribute("Location of the redirect.")

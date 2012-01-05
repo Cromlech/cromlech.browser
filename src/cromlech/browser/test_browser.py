@@ -41,7 +41,7 @@ def test_response():
     assert response.body == ''
     assert response.headers == {}
     assert response.charset == 'UTF-8'
-    assert response.status == '200 - OK'
+    assert response.status == '200 OK'
     assert response.status_int == 200
 
     response = testing.TestHTTPResponse()
@@ -52,34 +52,34 @@ def test_response():
     response = browser.redirect_response(
         testing.TestHTTPResponse, 'somewhere')
     assert response.headers == {'Location': 'somewhere'}
-    assert response.status == '302 - Found'
+    assert response.status == '302 Found'
     assert response.status_int == 302
 
     response = browser.redirect_response(
         testing.TestHTTPResponse, 'somewhere', code=305)
     assert response.headers == {'Location': 'somewhere'}
-    assert response.status == '305 - Use Proxy'
+    assert response.status == '305 Use Proxy'
     assert response.status_int == 305
 
     response = browser.redirect_response(
         testing.TestHTTPResponse, 'somewhere', code=310)
     assert response.headers == {'Location': 'somewhere'}
-    assert response.status == '310 - Too many Redirect'
+    assert response.status == '310 Too many Redirect'
     assert response.status_int == 310
 
     response = browser.redirect_response(
         testing.TestHTTPResponse, 'somewhere', code=307, **{'Dummy': 1})
     assert response.headers == {'Dummy': 1, 'Location': 'somewhere'}
-    assert response.status == '307 - Temporary Redirect'
+    assert response.status == '307 Temporary Redirect'
     assert response.status_int == 307
 
     response = browser.redirect_response(
         testing.TestHTTPResponse, 'somewhere', code=302, **{'Location': '/'})
     assert response.headers == {'Location': 'somewhere'}
-    assert response.status == '302 - Found'
+    assert response.status == '302 Found'
     assert response.status_int == 302
 
-    with pytest.raises(NotImplementedError):
+    with pytest.raises(RuntimeError):
         browser.redirect_response(
             testing.TestHTTPResponse, 'somewhere', code=404)
         browser.redirect_response(
@@ -88,6 +88,18 @@ def test_response():
             testing.TestHTTPResponse, 'somewhere', code=200)
         browser.redirect_response(
             testing.TestHTTPResponse, 'somewhere', code='quack')
+
+
+def test_exceptions():
+    redirections = browser.exceptions.REDIRECTIONS.items()
+    for code, exception in redirections:
+        assert code == exception.code
+        exc = exception('some location')
+        assert exc.location == 'some location'
+
+        response = browser.redirect_exception_response(
+            testing.TestHTTPResponse, exc)
+        assert response.status == "%s %s" % (code, exc.title)
 
 
 def test_renderer():

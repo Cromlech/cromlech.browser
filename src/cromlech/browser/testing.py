@@ -43,7 +43,7 @@ class TestHTTPResponse(object):
     def __init__(self, status=None, charset=None, headers=None):
         self.headers = headers or {}
         self.charset = charset or 'UTF-8'
-        self.status = status or '200 - OK'
+        self.status = status or '200 OK'
 
     @property
     def status_int(self):
