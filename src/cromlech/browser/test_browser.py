@@ -8,9 +8,9 @@ from zope.interface import Interface, verify
 
 def test_request():
     assert verify.verifyClass(
-        browser.IHTTPRequest, browser.testing.TestHTTPRequest)
+        browser.IHTTPRequest, testing.TestHTTPRequest)
 
-    request = browser.testing.TestHTTPRequest()
+    request = testing.TestHTTPRequest()
 
     assert verify.verifyObject(browser.IHTTPRequest, request)
     assert request.path == '/'
@@ -20,7 +20,7 @@ def test_request():
     assert request.application_url == 'http://localhost'
     assert request.form == {}
 
-    request = browser.testing.TestHTTPRequest(
+    request = testing.TestHTTPRequest(
         path='/test', method='POST', form={'test': 1})
 
     assert verify.verifyObject(browser.IHTTPRequest, request)
@@ -33,10 +33,12 @@ def test_request():
 
 
 def test_response():
+    import pytest
+    pytest.set_trace()
     assert verify.verifyClass(
-        browser.IHTTPResponse, browser.testing.TestHTTPResponse)
+        browser.IHTTPResponse, testing.TestHTTPResponse)
 
-    response = browser.testing.TestHTTPResponse()
+    response = testing.TestHTTPResponse()
     assert verify.verifyObject(browser.IHTTPResponse, response)
     assert response.body == ''
     assert response.headers == {}
@@ -44,7 +46,7 @@ def test_response():
     assert response.status == '200 - OK'
     assert response.status_int == 200
 
-    response = browser.testing.TestHTTPResponse()
+    response = testing.TestHTTPResponse()
     response.write('something')
     response.write(' and something else')
     assert response.body == 'something and something else'

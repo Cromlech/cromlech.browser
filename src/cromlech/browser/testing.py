@@ -8,18 +8,6 @@ from cromlech.browser import IRenderer, IView, ILayout
 from zope.interface import implements
 
 
-REDIRECTION = {
-    300: 'Multiple Choices',
-    301: 'Moved Permanently',
-    302: 'Found',
-    303: 'See Other',
-    304: 'Not Modified',
-    305: 'Use Proxy',
-    307: 'Temporary Redirect',
-    310: 'Too many Redirect',
-    }
-
-
 class TestHTTPRequest(object):
     implements(IHTTPRequest)
 
@@ -48,24 +36,20 @@ class TestHTTPRequest(object):
 class TestHTTPResponse(object):
     implements(IHTTPResponse)
 
-    charset = ''
-    status_int = 200
-    status = '200 - OK'
     body = ''
+    charset = ''
+    status = ''
 
-    def __init__(self, charset=None, headers=None):
+    def __init__(self, status=None, charset=None, headers=None):
         self.headers = headers or {}
         self.charset = charset or 'UTF-8'
+        self.status = status or '200 - OK'
 
-    def redirect(self, url, status=302, trusted=False):
-        """Sets the response for a redirect.
-        """
-        if not status in REDIRECTION:
-            raise NotImplementedError('This is not a redirection')
-
-        self.status_int = status
-        self.status = "%s - %s" % (status, REDIRECTION[status])
-        self.headers['Location'] = url
+    @property
+    def status_int(self):
+        if self.status:
+            return int(self.status[0:3])
+        return None
 
     def write(self, data=None):
         """Writes data to the response.

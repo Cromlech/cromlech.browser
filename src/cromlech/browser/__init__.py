@@ -13,3 +13,6 @@ from cromlech.browser.session import getSession, setSession
 from cromlech.browser.interfaces import IHTTPException, IRedirect
 from cromlech.browser.exceptions import (
     HTTPException, ResponseRedirect, TemporaryRedirect, PermanentRedirect)
+
+# utilities
+from cromlech.browser.utils import redirect_response
