@@ -14,7 +14,7 @@ from cromlech.browser.interfaces import IHTTPException, IHTTPRedirect
 
 # utilities
 from cromlech.browser.utils import (
-    redirect_response, redirect_exception_response)
+    HTMLWrapper, redirect_response, redirect_exception_response)
 
 # exceptions expostion
 from cromlech.browser import exceptions

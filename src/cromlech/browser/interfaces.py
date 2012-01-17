@@ -47,6 +47,13 @@ class IRenderer(Interface):
         """
 
 
+class ILayout(IRenderer):
+    """A layout serves as a content decoration. Mainly used to maintain
+    a site identity, it can be used as a simple renderer. Its `render`
+    method uses the `content` argument as the content to be wrapped.
+    """
+
+
 class IHTTPRenderer(IRenderer):
     """A renderer returning an HTTPResponse
     """
@@ -55,27 +62,15 @@ class IHTTPRenderer(IRenderer):
         """
 
 
-class ILayout(IHTTPRenderer):
-    """A layout renders common content of pages and place view and
-    slot rendering inside
-    """
-    context = Attribute("Object that the view presents.")
-    request = Attribute("Request that the view was looked up with.")
-
-
 class IView(IHTTPRenderer):
-    """The view return content representation
+    """The view return content representation.
+    Marker interface for a specialized http renderer.
     """
-    context = Attribute("Object that the view presents.")
-    request = Attribute("Request that the view was looked up with.")
-    response = Attribute("Response to be returned as a result of the call.")
 
 
 class IViewSlot(IRenderer):
     """A fragment of a view, acting as an aggregator of sub-renderers.
     """
-    context = Attribute("Object that the view presents.")
-    request = Attribute("Request that the view was looked up with.")
     view = Attribute("Renderer on which the slot is called.")
 
 

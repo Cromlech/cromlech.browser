@@ -1,7 +1,20 @@
 Changelog
 =========
 
-0.3a1 (2012-05-01)
+0.4 (2012-01-17)
+----------------
+
+- `ILayout` is no longer extending `IHTTPRenderer`, but simply `IRenderer`.
+  This choice is influenced by the experience in the use of this component
+  and does not prevent a `IHTTPRenderer` implementation of an `ILayout`
+  component.
+
+- An implementation of a `ILayout` component has been added : `HTTPWrappper`.
+  This layout wraps a string into HTML base tags in order to make it more
+  likely to have reusable renderers in other layouts.
+
+
+0.3a1 (2012-01-05)
 ------------------
 
 - Using now the new definitions from the ``cromlech.io`` split, introducing

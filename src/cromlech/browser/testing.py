@@ -78,16 +78,7 @@ class TestRenderer(object):
         return ""
 
 
-class TestHTTPRenderer(TestRenderer):
-    """A trivial conformance to IHTTPRenderer for testing.
-    """
-    implements(IHTTPRenderer)
-
-    def __call__(self, *args, **kwargs):
-        pass
-
-
-class TestLayout(TestHTTPRenderer):
+class TestLayout(TestRenderer):
     """A trivial conformance to ILayout for testing.
     """
     implements(ILayout)
@@ -95,6 +86,15 @@ class TestLayout(TestHTTPRenderer):
     def __init__(self, context=None, request=None):
         self.context = context
         self.request = request
+
+
+class TestHTTPRenderer(TestRenderer):
+    """A trivial conformance to IHTTPRenderer for testing.
+    """
+    implements(IHTTPRenderer)
+
+    def __call__(self, *args, **kwargs):
+        pass
 
 
 class TestView(TestHTTPRenderer):

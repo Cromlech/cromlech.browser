@@ -4,7 +4,7 @@ import os
 from setuptools import setup, find_packages
 
 
-version = '0.3a2'
+version = '0.4'
 
 install_requires = [
     'cromlech.io >= 0.2a1',
@@ -15,7 +15,7 @@ install_requires = [
 
 tests_require = [
     'pytest',
-    'BeautifulSoup==3.1.0.1'
+    'BeautifulSoup'
     ]
 
 setup(name='cromlech.browser',

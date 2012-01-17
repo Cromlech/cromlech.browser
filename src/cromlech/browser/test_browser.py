@@ -123,11 +123,19 @@ def test_http_renderer():
 
 
 def test_layout():
-    assert browser.ILayout.isOrExtends(browser.IHTTPRenderer)
+    assert browser.ILayout.isOrExtends(browser.IRenderer)
     assert verify.verifyClass(browser.ILayout, testing.TestLayout)
 
     layout = testing.TestLayout()
     assert verify.verifyObject(browser.ILayout, layout)
+
+
+def test_html_layout():
+    assert verify.verifyClass(browser.ILayout, browser.HTMLWrapper)
+    wrapper = browser.HTMLWrapper()
+    assert wrapper.render('<h1>Test !</h1>') == (
+        '<html><body><h1>Test !</h1></body></html>')
+    assert verify.verifyObject(browser.ILayout, wrapper)
 
 
 def test_view():
