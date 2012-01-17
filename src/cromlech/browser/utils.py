@@ -42,15 +42,12 @@ class HTMLWrapper(object):
     another layout.
     """
     implements(ILayout)
-    
+
     def namespace(self):
         return {'layout': self}
-    
+
     def update(self, *args, **kwargs):
         pass
 
     def render(self, content=u'', *args, **kwargs):
         return u"<html><body>%s</body></html>" % unicode(content, "utf-8")
-
-    def __call__(self, *args, **kwargs):
-        raise NotImplemented('Provide your own __call__ method.')
