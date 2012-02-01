@@ -100,6 +100,8 @@ def test_exceptions():
         response = browser.redirect_exception_response(
             testing.TestHTTPResponse, exc)
         assert response.status == "%s %s" % (code, exc.title)
+        assert response.headers['Location'] == 'some location'
+        assert response.headers['Content-Length'] == '0'
 
 
 def test_renderer():

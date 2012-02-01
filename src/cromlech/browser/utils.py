@@ -29,6 +29,7 @@ def redirect_exception_response(responseFactory, exception, **headers):
     if headers:
         response_headers.update(headers)
     response_headers['Location'] = exception.location
+    response_headers['Content-Length'] = '0'
 
     status = "%s %s" % (exception.code, exception.title)
     return responseFactory(status=status, headers=response_headers)
