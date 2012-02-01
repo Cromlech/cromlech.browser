@@ -16,6 +16,8 @@ def redirect_response(responseFactory, location, code=302, **headers):
     if headers:
         response_headers.update(headers)
     response_headers['Location'] = location
+    response_headers['Content-Length'] = '0'
+    response_headers['Content-Type'] = 'text/plain'
 
     status = "%s %s" % (exception.code, exception.title)
     return responseFactory(status=status, headers=response_headers)
@@ -30,6 +32,7 @@ def redirect_exception_response(responseFactory, exception, **headers):
         response_headers.update(headers)
     response_headers['Location'] = exception.location
     response_headers['Content-Length'] = '0'
+    response_headers['Content-Type'] = 'text/plain'
 
     status = "%s %s" % (exception.code, exception.title)
     return responseFactory(status=status, headers=response_headers)

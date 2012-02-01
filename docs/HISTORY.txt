@@ -4,7 +4,8 @@ Changelog
 0.4.1 (2012-02-01)
 ------------------
 
-- redirect_exception_response now sets content-length to 0
+- redirect_response and redirect_exception_response
+  now sets content-length to 0 and content-type to text/plain
 
 
 0.4 (2012-01-17)

@@ -51,31 +51,32 @@ def test_response():
 
     response = browser.redirect_response(
         testing.TestHTTPResponse, 'somewhere')
-    assert response.headers == {'Location': 'somewhere'}
+    assert response.headers['Location'] == 'somewhere'
     assert response.status == '302 Found'
     assert response.status_int == 302
 
     response = browser.redirect_response(
         testing.TestHTTPResponse, 'somewhere', code=305)
-    assert response.headers == {'Location': 'somewhere'}
+    assert response.headers['Location'] == 'somewhere'
     assert response.status == '305 Use Proxy'
     assert response.status_int == 305
 
     response = browser.redirect_response(
         testing.TestHTTPResponse, 'somewhere', code=310)
-    assert response.headers == {'Location': 'somewhere'}
+    assert response.headers['Location'] == 'somewhere'
     assert response.status == '310 Too many Redirect'
     assert response.status_int == 310
 
     response = browser.redirect_response(
         testing.TestHTTPResponse, 'somewhere', code=307, **{'Dummy': 1})
-    assert response.headers == {'Dummy': 1, 'Location': 'somewhere'}
+    assert response.headers['Location'] == 'somewhere'
+    assert response.headers['Dummy'] == 1
     assert response.status == '307 Temporary Redirect'
     assert response.status_int == 307
 
     response = browser.redirect_response(
         testing.TestHTTPResponse, 'somewhere', code=302, **{'Location': '/'})
-    assert response.headers == {'Location': 'somewhere'}
+    assert response.headers['Location'] == 'somewhere'
     assert response.status == '302 Found'
     assert response.status_int == 302
 
@@ -102,6 +103,7 @@ def test_exceptions():
         assert response.status == "%s %s" % (code, exc.title)
         assert response.headers['Location'] == 'some location'
         assert response.headers['Content-Length'] == '0'
+        assert response.headers['Content-Type'] == 'text/plain'
 
 
 def test_renderer():
