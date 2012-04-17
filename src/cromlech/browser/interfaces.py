@@ -74,6 +74,15 @@ class IViewSlot(IRenderer):
     view = Attribute("Renderer on which the slot is called.")
 
 
+class IForm(Interface):
+    """Browser forms specific attributes"""
+
+    postOnly = Attribute(
+        u"Boolean indicating whether we only accept Post requests")
+    formMethod = Attribute(u"Form method as a string")
+    enctype = Attribute(u"Encoding type")
+
+
 class ITemplate(Interface):
     """a template
     """
