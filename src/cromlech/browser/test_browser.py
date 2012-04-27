@@ -3,6 +3,7 @@
 import pytest
 from cromlech import browser
 from cromlech.browser import testing
+from cromlech.browser.interfaces import IHTTPException
 from zope.interface import Interface, verify
 
 
@@ -91,7 +92,7 @@ def test_response():
             testing.TestHTTPResponse, 'somewhere', code='quack')
 
 
-def test_exceptions():
+def test_redirect_exceptions():
     redirections = browser.exceptions.REDIRECTIONS.items()
     for code, exception in redirections:
         assert code == exception.code
@@ -104,6 +105,15 @@ def test_exceptions():
         assert response.headers['Location'] == 'some location'
         assert response.headers['Content-Length'] == '0'
         assert response.headers['Content-Type'] == 'text/plain'
+
+
+def test_client_error_exceptions():
+    client_errors = browser.exceptions.CLIENT_ERRORS.items()
+    for code, exception in client_errors:
+        try:
+            raise exception('test')
+        except exception, e:
+            assert verify.verifyObject(IHTTPException, e)
 
 
 def test_renderer():
