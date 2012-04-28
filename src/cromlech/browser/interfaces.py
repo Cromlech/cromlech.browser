@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from cromlech.io import IRequest, IResponse
+from cromlech.io import IRequest, IResponse, ITypedRequest
 from zope.interface import Interface, Attribute
 
 
@@ -16,6 +16,11 @@ class IHTTPRequest(IRequest):
     form = Attribute("Parsed GET or POST data.")
     method = Attribute("Method of the request.")
     script_name = Attribute("Name of the script root.")
+
+
+class ITypedHTTPRequest(ITypedRequest, IHTTPRequest):
+    """Base interface for typed http request interfaces
+    """
 
 
 class IHTTPResponse(IResponse):
