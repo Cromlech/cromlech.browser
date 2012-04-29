@@ -4,12 +4,11 @@ import os
 from setuptools import setup, find_packages
 
 
-version = '0.4.4'
+version = '0.5'
 
 install_requires = [
-    'cromlech.io >= 0.2a1',
-    'setuptools',
     'martian',
+    'setuptools',
     'zope.interface',
     ]
 

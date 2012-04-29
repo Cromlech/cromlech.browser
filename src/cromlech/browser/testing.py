@@ -3,13 +3,12 @@
 """
 import difflib
 from BeautifulSoup import BeautifulStoneSoup
-from cromlech.browser import IHTTPRenderer, IHTTPRequest, IHTTPResponse
-from cromlech.browser import IRenderer, IView, ILayout
+from cromlech.browser import IRequest, IResponse, IView, ILayout
 from zope.interface import implements
 
 
-class TestHTTPRequest(object):
-    implements(IHTTPRequest)
+class TestRequest(object):
+    implements(IRequest)
 
     form = {}
     body = ''
@@ -33,8 +32,8 @@ class TestHTTPRequest(object):
         self.__dict__.update(kw)
 
 
-class TestHTTPResponse(object):
-    implements(IHTTPResponse)
+class TestResponse(object):
+    implements(IResponse)
 
     body = ''
     charset = ''
@@ -63,22 +62,7 @@ class TestHTTPResponse(object):
         return iter([self.body])
 
 
-class TestRenderer(object):
-    """A trivial conformance to IRenderer for testing.
-    """
-    implements(IRenderer)
-
-    def namespace(self):
-        return dict()
-
-    def update(self, *args, **kwargs):
-        pass
-
-    def render(self, *args, **kwargs):
-        return ""
-
-
-class TestLayout(TestRenderer):
+class TestLayout(object):
     """A trivial conformance to ILayout for testing.
     """
     implements(ILayout)
@@ -87,37 +71,32 @@ class TestLayout(TestRenderer):
         self.context = context
         self.request = request
 
-
-class TestHTTPRenderer(TestRenderer):
-    """A trivial conformance to IHTTPRenderer for testing.
-    """
-    implements(IHTTPRenderer)
-
-    def __call__(self, *args, **kwargs):
+    def update(self, **kwargs):
         pass
 
+    def render(self, content, **env):
+        raise NotImplementedError('You need to implement your own')
 
-class TestView(TestHTTPRenderer):
+
+class TestView(object):
     """A trivial conformance to IView for testing.
     """
     implements(IView)
-
-    response = None
-    responseFactory = TestHTTPResponse
 
     def __init__(self, context=None, request=None):
         self.context = context
         self.request = request
 
-    def update(self, *args, **kwargs):
-        self.response = self.responseFactory()
+    def update(self, **kwargs):
+        pass
 
-    def render(self, *args, **kwargs):
+    def render(self, **kwargs):
         raise NotImplementedError('You need to implement your own')
 
-    def __call__(self, *args, **kwargs):
-        self.update()
-        self.response.write(self.render())
+    def __call__(self, **kwargs):
+        self.update(**kwargs)
+        response = TestResponse()
+        response.write(self.render(**kwargs))
         return self.response
 
 

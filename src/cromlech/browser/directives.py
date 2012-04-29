@@ -1,17 +1,33 @@
 # -*- coding: utf-8 -*-
-"""
-Some directives to link components
+"""Some directives to link components
 """
 
 import martian
+from cromlech.browser.interfaces import IRequest, IView, IViewSlot
 from zope.interface import Interface
-from cromlech.browser.interfaces import IViewSlot
+from zope.interface.interfaces import IInterface
 
 
-def default_view_name(factory, module=None, **data):
-    """A view is, by default registered under its lowercase name.
-    """
-    return factory.__name__.lower()
+def extends_default(directive, value):
+    martian.validateInterfaceOrClass(directive, value)
+    default = directive.default
+    if IInterface.providedBy(value):
+        if not value.isOrExtends(default):
+            raise martian.error.GrokImportError(
+                "%r is not a valid `%s` interface." % (
+                    value, default.__name__))
+    else:
+        if not default.implementedBy(value):
+            raise martian.error.GrokImportError(
+                "%r must implement the `%s` interface." % (
+                    value, default.__name__))
+
+
+class request(martian.Directive):
+    scope = martian.CLASS_OR_MODULE
+    store = martian.ONCE
+    default = IRequest
+    validate = extends_default
 
 
 class view(martian.Directive):
@@ -20,7 +36,8 @@ class view(martian.Directive):
     """
     scope = martian.CLASS_OR_MODULE
     store = martian.ONCE
-    default = Interface
+    default = IView
+    validate = extends_default
 
 
 class slot(martian.Directive):
@@ -29,3 +46,4 @@ class slot(martian.Directive):
     scope = martian.CLASS_OR_MODULE
     store = martian.ONCE
     default = IViewSlot
+    validate = extends_default

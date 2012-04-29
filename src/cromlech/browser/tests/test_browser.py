@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+import martian
 from cromlech import browser
 from cromlech.browser import testing
-from cromlech.browser.interfaces import IHTTPException
+from cromlech.browser.interfaces import IHTTPException, IView
 from zope.interface import Interface, verify
 
 
 def test_request():
     assert verify.verifyClass(
-        browser.IHTTPRequest, testing.TestHTTPRequest)
+        browser.IRequest, testing.TestRequest)
 
-    request = testing.TestHTTPRequest()
+    request = testing.TestRequest()
 
-    assert verify.verifyObject(browser.IHTTPRequest, request)
+    assert verify.verifyObject(browser.IRequest, request)
     assert request.path == '/'
     assert request.body == ''
     assert request.charset == 'UTF-8'
@@ -21,10 +22,10 @@ def test_request():
     assert request.application_url == 'http://localhost'
     assert request.form == {}
 
-    request = testing.TestHTTPRequest(
+    request = testing.TestRequest(
         path='/test', method='POST', form={'test': 1})
 
-    assert verify.verifyObject(browser.IHTTPRequest, request)
+    assert verify.verifyObject(browser.IRequest, request)
     assert request.path == '/test'
     assert request.body == ''
     assert request.charset == 'UTF-8'
@@ -35,61 +36,61 @@ def test_request():
 
 def test_response():
     assert verify.verifyClass(
-        browser.IHTTPResponse, testing.TestHTTPResponse)
+        browser.IResponse, testing.TestResponse)
 
-    response = testing.TestHTTPResponse()
-    assert verify.verifyObject(browser.IHTTPResponse, response)
+    response = testing.TestResponse()
+    assert verify.verifyObject(browser.IResponse, response)
     assert response.body == ''
     assert response.headers == {}
     assert response.charset == 'UTF-8'
     assert response.status == '200 OK'
     assert response.status_int == 200
 
-    response = testing.TestHTTPResponse()
+    response = testing.TestResponse()
     response.write('something')
     response.write(' and something else')
     assert response.body == 'something and something else'
 
     response = browser.redirect_response(
-        testing.TestHTTPResponse, 'somewhere')
+        testing.TestResponse, 'somewhere')
     assert response.headers['Location'] == 'somewhere'
     assert response.status == '302 Found'
     assert response.status_int == 302
 
     response = browser.redirect_response(
-        testing.TestHTTPResponse, 'somewhere', code=305)
+        testing.TestResponse, 'somewhere', code=305)
     assert response.headers['Location'] == 'somewhere'
     assert response.status == '305 Use Proxy'
     assert response.status_int == 305
 
     response = browser.redirect_response(
-        testing.TestHTTPResponse, 'somewhere', code=310)
+        testing.TestResponse, 'somewhere', code=310)
     assert response.headers['Location'] == 'somewhere'
     assert response.status == '310 Too many Redirect'
     assert response.status_int == 310
 
     response = browser.redirect_response(
-        testing.TestHTTPResponse, 'somewhere', code=307, **{'Dummy': 1})
+        testing.TestResponse, 'somewhere', code=307, **{'Dummy': 1})
     assert response.headers['Location'] == 'somewhere'
     assert response.headers['Dummy'] == 1
     assert response.status == '307 Temporary Redirect'
     assert response.status_int == 307
 
     response = browser.redirect_response(
-        testing.TestHTTPResponse, 'somewhere', code=302, **{'Location': '/'})
+        testing.TestResponse, 'somewhere', code=302, **{'Location': '/'})
     assert response.headers['Location'] == 'somewhere'
     assert response.status == '302 Found'
     assert response.status_int == 302
 
     with pytest.raises(RuntimeError):
         browser.redirect_response(
-            testing.TestHTTPResponse, 'somewhere', code=404)
+            testing.TestResponse, 'somewhere', code=404)
         browser.redirect_response(
-            testing.TestHTTPResponse, 'somewhere', code=500)
+            testing.TestResponse, 'somewhere', code=500)
         browser.redirect_response(
-            testing.TestHTTPResponse, 'somewhere', code=200)
+            testing.TestResponse, 'somewhere', code=200)
         browser.redirect_response(
-            testing.TestHTTPResponse, 'somewhere', code='quack')
+            testing.TestResponse, 'somewhere', code='quack')
 
 
 def test_redirect_exceptions():
@@ -100,7 +101,7 @@ def test_redirect_exceptions():
         assert exc.location == 'some location'
 
         response = browser.redirect_exception_response(
-            testing.TestHTTPResponse, exc)
+            testing.TestResponse, exc)
         assert response.status == "%s %s" % (code, exc.title)
         assert response.headers['Location'] == 'some location'
         assert response.headers['Content-Length'] == '0'
@@ -114,26 +115,6 @@ def test_client_error_exceptions():
             raise exception('test')
         except exception, e:
             assert verify.verifyObject(IHTTPException, e)
-
-
-def test_renderer():
-    assert verify.verifyClass(
-        browser.IRenderer, testing.TestRenderer)
-
-    renderer = testing.TestRenderer()
-
-    assert verify.verifyObject(browser.IRenderer, renderer)
-    assert renderer.namespace() == {}
-    assert renderer.render() == ''
-
-
-def test_http_renderer():
-    assert browser.IHTTPRenderer.isOrExtends(browser.IRenderer)
-    assert verify.verifyClass(
-        browser.IHTTPRenderer, testing.TestHTTPRenderer)
-
-    renderer = testing.TestHTTPRenderer()
-    assert verify.verifyObject(browser.IHTTPRenderer, renderer)
 
 
 def test_layout():
@@ -153,7 +134,7 @@ def test_html_layout():
 
 
 def test_view():
-    assert browser.IView.isOrExtends(browser.IHTTPRenderer)
+    assert browser.IView.isOrExtends(browser.IRenderer)
     assert verify.verifyClass(browser.IView, testing.TestView)
 
     view = testing.TestView()
@@ -186,10 +167,7 @@ def test_directive_view():
         pass
 
     assert browser.view.bind().get(Dummy) == view
-    assert browser.view.bind().get(NoValue) == Interface
-
-    assert browser.default_view_name(Dummy) == 'dummy'
-    assert browser.default_view_name(NoValue) == 'novalue'
+    assert browser.view.bind().get(NoValue) == IView
 
 
 def test_directive_slot():
@@ -204,3 +182,54 @@ def test_directive_slot():
 
     assert browser.slot.bind().get(Dummy) == slot
     assert browser.slot.bind().get(NoValue) == browser.IViewSlot
+
+
+def test_directive_request():
+
+    # Working cases. See the fixtures module for more information.
+    from cromlech.browser.tests._fixtures import working1
+    assert browser.request.bind().get(working1) == browser.IRequest
+
+    from cromlech.browser.tests._fixtures import working2
+    assert browser.request.bind().get(working2) == working2.ISubRequest
+
+    from cromlech.browser.tests._fixtures import working3
+    assert browser.request.bind().get(working3) == testing.TestRequest
+
+    from cromlech.browser.tests._fixtures import working4
+    assert browser.request.bind().get(working4.MyItem) == browser.IRequest
+
+    # failing cases. See the fixtures module for more information.
+    with pytest.raises(martian.error.GrokImportError) as e:
+        from cromlech.browser.tests._fixtures import failing1
+    assert str(e.value.message) == (
+        "<InterfaceClass cromlech.browser.tests._fixtures.failing1.INotRequest> "
+        "is not a valid `IRequest` interface.")
+   
+    with pytest.raises(martian.error.GrokImportError) as e:
+        from cromlech.browser.tests._fixtures import failing2
+    assert str(e.value.message) == (
+        "The 'request' directive can only be called with a class or "
+        "an interface.")
+
+    with pytest.raises(martian.error.GrokImportError) as e:
+        from cromlech.browser.tests._fixtures import failing3
+    assert str(e.value.message) == (
+        "<class 'cromlech.browser.tests._fixtures.failing3.Dummy'> must "
+        "implement the `IRequest` interface.")
+
+    with pytest.raises(martian.error.GrokImportError) as e:
+        from cromlech.browser.tests._fixtures import failing4
+    assert str(e.value.message) == (
+        "<class 'cromlech.browser.tests._fixtures.failing4.Dummy'> must "
+        "implement the `IRequest` interface.")
+
+    with pytest.raises(martian.error.GrokImportError) as e:
+        from cromlech.browser.tests._fixtures import failing5
+    assert str(e.value.message) == (
+        "The 'request' directive can only be called once per class or module.")
+
+    with pytest.raises(martian.error.GrokImportError) as e:
+        from cromlech.browser.tests._fixtures import failing6
+    assert str(e.value.message) == (
+        "The 'request' directive can only be called once per class or module.")

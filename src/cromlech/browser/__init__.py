@@ -1,20 +1,15 @@
 # component definitions
-from cromlech.browser.interfaces import (
-    IRenderer, IHTTPRenderer, ILayout, IView, IViewSlot,
-    ITemplate, ITraverser, IHTTPRequest, IHTTPResponse, IURLResolver)
+from cromlech.browser.interfaces import *
 
 # directives
-from cromlech.browser.directives import view, slot, default_view_name
+from cromlech.browser.directives import request, view, slot
 
 # hooks
 from cromlech.browser.session import getSession, setSession
-
-# exceptions definition
-from cromlech.browser.interfaces import IHTTPException, IHTTPRedirect
 
 # utilities
 from cromlech.browser.utils import (
     HTMLWrapper, redirect_response, redirect_exception_response)
 
-# exceptions expostion
+# exceptions exposition
 from cromlech.browser import exceptions

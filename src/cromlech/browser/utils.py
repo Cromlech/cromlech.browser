@@ -47,11 +47,13 @@ class HTMLWrapper(object):
     """
     implements(ILayout)
 
-    def namespace(self):
-        return {'layout': self}
+    def namespace(self, **data):
+        ns = {'layout': self}
+        ns.update(data)
+        return ns
 
-    def update(self, *args, **kwargs):
+    def update(self, **kwargs):
         pass
 
-    def render(self, content=u'', *args, **kwargs):
+    def render(self, content=u'', **kwargs):
         return u"<html><body>%s</body></html>" % unicode(content, "utf-8")
