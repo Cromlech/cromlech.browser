@@ -3,7 +3,8 @@
 """
 import difflib
 from BeautifulSoup import BeautifulStoneSoup
-from cromlech.browser import IRequest, IResponse, IView, IViewSlot, ILayout
+from cromlech.browser import IRequest, IResponse, IResponseFactory
+from cromlech.browser import IView, IViewSlot, ILayout
 from zope.interface import implements
 
 
@@ -78,7 +79,7 @@ class TestLayout(object):
 class TestView(object):
     """A trivial conformance to IView for testing.
     """
-    implements(IView)
+    implements(IView, IResponseFactory)
 
     def __init__(self, context=None, request=None):
         self.context = context
@@ -87,7 +88,7 @@ class TestView(object):
     def __call__(self):
         response = TestResponse()
         response.write(self.render())
-        return self.response
+        return response
 
 
 class TestViewSlot(object):

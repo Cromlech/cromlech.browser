@@ -49,14 +49,36 @@ class IResponse(IWSGIComponent):
         """
 
 
+class IResponseFactory(Interface):
+    """A response factory.
+    """
+    def __call__():
+        """Returns a IResponse object.
+        """
+
+
 class IView(Interface):
-    """A component that
+    """Indicates that a component is a view.
+
+    The publisher tries to adapt the context and request
+    to an IView. After this, the publisher will try to
+    adapt the resulting IView to IResponseFactory.
+
+    The component that implements this interface will therefore have
+    to implement IResponseFactory or alternatively an adapter should
+    exist that knows how to convert this component to an IResponseFactory.
     """
 
 
 class IRenderable(Interface):
+    """A view-like object that uses a two-phase strategy for rendering.
+
+    When a renderable is rendered, first the update method is called
+    to prepare it for rendering. After this, the render method is used
+    to actually render the view. The render method returns either a
+    unicode string with the rendered content, or an IResponse object.
     """
-    """
+
     def update():
         """Prepares the rendering.
         """
@@ -70,14 +92,6 @@ class IViewSlot(IRenderable):
     """A fragment of a view, acting as an aggregator of sub-renderers.
     """
     view = Attribute("Renderer on which the slot is called.")
-
-
-class IResponseFactory(Interface):
-    """A component returning an IResponse
-    """
-    def __call__():
-        """Returns a response object with the body and headers set.
-        """
 
 
 class ILayout(Interface):
