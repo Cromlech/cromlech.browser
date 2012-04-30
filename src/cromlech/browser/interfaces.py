@@ -211,6 +211,7 @@ class IPublicationActorsAPI(Interface):
     IPublisher = Attribute("The component in charge of the publication.")
     IPublicationRoot = Attribute("The root of the requested resouce.")
     ITypedRequest = Attribute("Base interface for request marker interfaces")
+    ITraverser = Attribute("A component dedicated to traversing.")
 
 
 class IPublicationFlowAPI(Interface):
