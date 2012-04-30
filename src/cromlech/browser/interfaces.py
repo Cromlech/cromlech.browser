@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 
 from zope.interface import Interface, Attribute, implements, moduleProvides
@@ -48,7 +49,7 @@ class IResponse(IWSGIComponent):
         """
 
 
-class IViewable(Interface):
+class IView(Interface):
     """A component that
     """
 
@@ -71,7 +72,7 @@ class IViewSlot(IRenderable):
     view = Attribute("Renderer on which the slot is called.")
 
 
-class IView(Interface):
+class IResponseFactory(Interface):
     """A component returning an IResponse
     """
     def __call__():
@@ -209,9 +210,9 @@ class IPublicationFlowAPI(Interface):
 
 class IComponentsAPI(Interface):
     IRenderable = Attribute("")
-    IViewable = Attribute("")
-    ILayout = Attribute("")
     IView = Attribute("")
+    ILayout = Attribute("")
+    IResponseFactory = Attribute("")
     IViewSlot = Attribute("")
     IForm = Attribute("")
     ITemplate = Attribute("")  
