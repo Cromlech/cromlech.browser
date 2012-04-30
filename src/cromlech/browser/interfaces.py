@@ -49,12 +49,26 @@ class IResponse(IWSGIComponent):
 
 
 class IViewable(Interface):
-    """A component that
+    """Indicates that a component can be turned into a view.
+
+    A component that implements IViewable is registered for a context
+    object and request. The publisher adapts the context and request
+    to an IViewable instance. After this the publisher will try to
+    adapt it to IView.
+
+    The component that implements this interface will therefore have
+    to implement IView or alternatively an adapter exists that knows
+    how to convert this component to an IView.
     """
 
 
 class IRenderable(Interface):
-    """
+    """A view-like object that uses a two-phase strategy for rendering.
+
+    When a renderable is rendered, first the update method is called
+    to prepare it for rendering. After this, the render method is used
+    to actually render the view. The render method returns either a
+    unicode string with the rendered content, or an IResponse object.
     """
     def update():
         """Prepares the rendering.
