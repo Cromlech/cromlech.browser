@@ -5,7 +5,7 @@ import martian
 from cromlech import browser
 from cromlech.browser import testing
 from cromlech.browser.interfaces import IHTTPException, IView
-from zope.interface import Interface, verify
+from zope.interface import verify
 
 
 def test_request():
@@ -118,7 +118,6 @@ def test_client_error_exceptions():
 
 
 def test_layout():
-    assert browser.ILayout.isOrExtends(browser.IRenderer)
     assert verify.verifyClass(browser.ILayout, testing.TestLayout)
 
     layout = testing.TestLayout()
@@ -128,13 +127,12 @@ def test_layout():
 def test_html_layout():
     assert verify.verifyClass(browser.ILayout, browser.HTMLWrapper)
     wrapper = browser.HTMLWrapper()
-    assert wrapper.render('<h1>Test !</h1>') == (
+    assert wrapper('<h1>Test !</h1>') == (
         '<html><body><h1>Test !</h1></body></html>')
     assert verify.verifyObject(browser.ILayout, wrapper)
 
 
 def test_view():
-    assert browser.IView.isOrExtends(browser.IRenderer)
     assert verify.verifyClass(browser.IView, testing.TestView)
 
     view = testing.TestView()
@@ -158,78 +156,56 @@ def test_session():
 
 def test_directive_view():
 
-    view = object()
+    with pytest.raises(martian.error.GrokImportError):
+        class WrongValue(object):
+            browser.view(object())
 
     class Dummy(object):
-        browser.view(view)
+        browser.view(testing.TestView)
 
     class NoValue(object):
         pass
 
-    assert browser.view.bind().get(Dummy) == view
+    assert browser.view.bind().get(Dummy) == testing.TestView
     assert browser.view.bind().get(NoValue) == IView
 
 
 def test_directive_slot():
-
-    slot = object()
+   
+    with pytest.raises(martian.error.GrokImportError):
+        class WrongValue(object):
+            browser.slot(object())
 
     class Dummy(object):
-        browser.slot(slot)
+        browser.slot(testing.TestViewSlot)
 
     class NoValue(object):
         pass
 
-    assert browser.slot.bind().get(Dummy) == slot
+    assert browser.slot.bind().get(Dummy) == testing.TestViewSlot
     assert browser.slot.bind().get(NoValue) == browser.IViewSlot
 
 
 def test_directive_request():
 
-    # Working cases. See the fixtures module for more information.
-    from cromlech.browser.tests._fixtures import working1
-    assert browser.request.bind().get(working1) == browser.IRequest
+    req = testing.TestRequest()
 
-    from cromlech.browser.tests._fixtures import working2
-    assert browser.request.bind().get(working2) == working2.ISubRequest
+    class ISomeRequest(browser.IRequest):
+        pass
 
-    from cromlech.browser.tests._fixtures import working3
-    assert browser.request.bind().get(working3) == testing.TestRequest
+    with pytest.raises(martian.error.GrokImportError):
+        class WrongValue(object):
+            browser.request(object())
 
-    from cromlech.browser.tests._fixtures import working4
-    assert browser.request.bind().get(working4.MyItem) == browser.IRequest
+    with pytest.raises(martian.error.GrokImportError):
+        class InstanceValue(object):
+            browser.request(req)
 
-    # failing cases. See the fixtures module for more information.
-    with pytest.raises(martian.error.GrokImportError) as e:
-        from cromlech.browser.tests._fixtures import failing1
-    assert str(e.value.message) == (
-        "<InterfaceClass cromlech.browser.tests._fixtures.failing1.INotRequest> "
-        "is not a valid `IRequest` interface.")
-   
-    with pytest.raises(martian.error.GrokImportError) as e:
-        from cromlech.browser.tests._fixtures import failing2
-    assert str(e.value.message) == (
-        "The 'request' directive can only be called with a class or "
-        "an interface.")
+    class Basic(object):
+        browser.request(ISomeRequest)
 
-    with pytest.raises(martian.error.GrokImportError) as e:
-        from cromlech.browser.tests._fixtures import failing3
-    assert str(e.value.message) == (
-        "<class 'cromlech.browser.tests._fixtures.failing3.Dummy'> must "
-        "implement the `IRequest` interface.")
+    class NoValue(object):
+        pass
 
-    with pytest.raises(martian.error.GrokImportError) as e:
-        from cromlech.browser.tests._fixtures import failing4
-    assert str(e.value.message) == (
-        "<class 'cromlech.browser.tests._fixtures.failing4.Dummy'> must "
-        "implement the `IRequest` interface.")
-
-    with pytest.raises(martian.error.GrokImportError) as e:
-        from cromlech.browser.tests._fixtures import failing5
-    assert str(e.value.message) == (
-        "The 'request' directive can only be called once per class or module.")
-
-    with pytest.raises(martian.error.GrokImportError) as e:
-        from cromlech.browser.tests._fixtures import failing6
-    assert str(e.value.message) == (
-        "The 'request' directive can only be called once per class or module.")
+    assert browser.request.bind().get(Basic) == ISomeRequest
+    assert browser.request.bind().get(NoValue) == browser.IRequest

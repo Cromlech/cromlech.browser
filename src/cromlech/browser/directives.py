@@ -4,7 +4,6 @@
 
 import martian
 from cromlech.browser.interfaces import IRequest, IView, IViewSlot
-from zope.interface import Interface
 from zope.interface.interfaces import IInterface
 
 

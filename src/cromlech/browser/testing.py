@@ -3,7 +3,7 @@
 """
 import difflib
 from BeautifulSoup import BeautifulStoneSoup
-from cromlech.browser import IRequest, IResponse, IView, ILayout
+from cromlech.browser import IRequest, IResponse, IView, IViewSlot, ILayout
 from zope.interface import implements
 
 
@@ -61,20 +61,17 @@ class TestResponse(object):
     def __iter__(self):
         return iter([self.body])
 
+    def __call__(self, environ, start_response):
+        start_response(self.status, self.headers.items())
+        return iter(self)
+
 
 class TestLayout(object):
     """A trivial conformance to ILayout for testing.
     """
     implements(ILayout)
 
-    def __init__(self, context=None, request=None):
-        self.context = context
-        self.request = request
-
-    def update(self, **kwargs):
-        pass
-
-    def render(self, content, **env):
+    def __call__(self, content, **env):
         raise NotImplementedError('You need to implement your own')
 
 
@@ -87,17 +84,25 @@ class TestView(object):
         self.context = context
         self.request = request
 
-    def update(self, **kwargs):
+    def __call__(self):
+        response = TestResponse()
+        response.write(self.render())
+        return self.response
+
+
+class TestViewSlot(object):
+    """A trivial conformance to IViewSlot for testing.
+    """
+    implements(IViewSlot)
+
+    def __init__(self, view):
+        self.view = view
+
+    def update(self):
         pass
 
-    def render(self, **kwargs):
-        raise NotImplementedError('You need to implement your own')
-
-    def __call__(self, **kwargs):
-        self.update(**kwargs)
-        response = TestResponse()
-        response.write(self.render(**kwargs))
-        return self.response
+    def render(self):
+        return "%r is used" % self.view.__name__
 
 
 class XMLSoup(BeautifulStoneSoup):

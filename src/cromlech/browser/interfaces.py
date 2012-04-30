@@ -23,7 +23,17 @@ class ITypedRequest(IRequest):
     """
 
 
-class IResponse(Interface):
+class IWSGIComponent(Interface):
+    """Defines a component that is able to respond to a direct WSGI Call.
+    More widely, this defines the very basics of a WSGI Application.
+    """
+    def __call__(environ, start_response):
+        """Cooks a valid WSGI response thanks to start_response,
+        setting headers and returning an iterable body.
+        """
+
+
+class IResponse(IWSGIComponent):
     """A response is the actor responding to the request. The request being
     the input, the response is the output. It has a result code and a body.
     A conveniant method `write` allows us to interact with the body.
@@ -38,45 +48,46 @@ class IResponse(Interface):
         """
 
 
-class IRenderer(Interface):
-    """An object meant to render something.
-
-    Most of the time, it gets an object and a request and returns
-    a response but may also return raw data.
+class IViewable(Interface):
+    """A component that
     """
 
-    def update(**kwargs):
+
+class IRenderable(Interface):
+    """
+    """
+    def update():
         """Prepares the rendering.
         """
 
-    def render(**kwargs):
+    def render():
         """Returns the raw data.
         """
 
 
-class ILayout(IRenderer):
-    """A layout serves as a content decoration. Mainly used to maintain
-    a site identity, it can be used as a simple renderer. Its `render`
-    method uses the `content` argument as the content to be wrapped.
+class IViewSlot(IRenderable):
+    """A fragment of a view, acting as an aggregator of sub-renderers.
     """
-    def render(content, **layout_environ):
-        """Wraps the content into a 'decoration'. The `layout_environ`
-        dict can contain additional data helping to render this component.
-        """
+    view = Attribute("Renderer on which the slot is called.")
 
 
-class IView(IRenderer):
-    """A renderer returning an HTTPResponse
+class IView(Interface):
+    """A component returning an IResponse
     """
-    def __call__(**kwargs):
+    def __call__():
         """Returns a response object with the body and headers set.
         """
 
 
-class IViewSlot(IRenderer):
-    """A fragment of a view, acting as an aggregator of sub-renderers.
+class ILayout(Interface):
+    """A layout serves as a content decoration. Mainly used to maintain
+    a site identity, it can be used as a simple renderer. Its `render`
+    method uses the `content` argument as the content to be wrapped.
     """
-    view = Attribute("Renderer on which the slot is called.")
+    def __call__(content, **layout_environ):
+        """Wraps the content into a 'decoration'. The `layout_environ`
+        dict can contain additional data helping to render this component.
+        """
 
 
 class IForm(Interface):
@@ -111,16 +122,6 @@ class ITraverser(Interface):
 
     def traverse(namespace, identifier):
         """Do the traversing of namespace searching for identifier
-        """
-
-
-class IWSGIResponsive(Interface):
-    """Defines a component that is able to respond to a direct WSGI Call.
-    More widely, this defines the very basics of a WSGI Application.
-    """
-    def __call__(environ, start_response):
-        """Cooks a valid WSGI response thanks to start_response,
-        setting headers and returning an iterable body.
         """
 
 
@@ -191,7 +192,7 @@ class IPublicationActorsAPI(Interface):
     """The publication actors in charge of transform the input request
     into the output response.
     """
-    IWSGIResponsive = Attribute("The WSGI application.")
+    IWSGIComponent = Attribute("A WSGI component.")
     IPublisher = Attribute("The component in charge of the publication.")
     IPublicationRoot = Attribute("The root of the requested resouce.")
     ITypedRequest = Attribute("Base interface for request marker interfaces")
@@ -207,7 +208,8 @@ class IPublicationFlowAPI(Interface):
 
 
 class IComponentsAPI(Interface):
-    IRenderer = Attribute("")
+    IRenderable = Attribute("")
+    IViewable = Attribute("")
     ILayout = Attribute("")
     IView = Attribute("")
     IViewSlot = Attribute("")
