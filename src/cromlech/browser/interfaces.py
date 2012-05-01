@@ -1,7 +1,7 @@
 
 # -*- coding: utf-8 -*-
 
-from zope.interface import Interface, Attribute, implements, moduleProvides
+from zope.interface import Attribute, Interface, implements, moduleProvides
 
 
 class IRequest(Interface):
@@ -201,41 +201,49 @@ class IHTTPRedirect(IHTTPException):
     location = Attribute("Location of the redirect.")
 
 
+class Doc(Attribute):
+    """Turns the docstring of the given component into an Attribute.
+    """
+    def __init__(self, component):
+        docstring = component.__doc__ or ''
+        Attribute.__init__(self, docstring)
+
+
 class IExchangeMediumsAPI(Interface):
     """Base components defining the input/output.
     """
-    IRequest = Attribute(IRequest.__doc__)
-    IResponse = Attribute(IResponse.__doc__)
+    IRequest = Doc(IRequest)
+    IResponse = Doc(IResponse)
 
 
 class IPublicationActorsAPI(Interface):
     """The publication actors in charge of transform the input request
     into the output response.
     """
-    IWSGIComponent = Attribute(IWSGIComponent.__doc__)
-    IPublisher = Attribute(IPublisher.__doc__)
-    IPublicationRoot = Attribute(IPublicationRoot.__doc__)
-    ITypedRequest = Attribute(ITypedRequest.__doc__)
-    ITraverser = Attribute(ITraverser.__doc__)
+    IWSGIComponent = Doc(IWSGIComponent)
+    IPublisher = Doc(IPublisher)
+    IPublicationRoot = Doc(IPublicationRoot)
+    ITypedRequest = Doc(ITypedRequest)
+    ITraverser = Doc(ITraverser)
 
 
 class IPublicationFlowAPI(Interface):
     """The publication events.
     """
-    IPublicationBeginsEvent = Attribute(IPublicationBeginsEvent.__doc__)
-    IPublicationEndsEvent = Attribute(IPublicationEndsEvent.__doc__)
-    PublicationBeginsEvent = Attribute(PublicationBeginsEvent.__doc__)
-    PublicationEndsEvent = Attribute(PublicationEndsEvent.__doc__)
+    IPublicationBeginsEvent = Doc(IPublicationBeginsEvent)
+    IPublicationEndsEvent = Doc(IPublicationEndsEvent)
+    PublicationBeginsEvent = Doc(PublicationBeginsEvent)
+    PublicationEndsEvent = Doc(PublicationEndsEvent)
 
 
 class IComponentsAPI(Interface):
-    IRenderable = Attribute(IRenderable.__doc__)
-    IView = Attribute(IView.__doc__)
-    ILayout = Attribute(ILayout.__doc__)
-    IResponseFactory = Attribute(IResponseFactory.__doc__)
-    IViewSlot = Attribute(IViewSlot.__doc__)
-    IForm = Attribute(IForm.__doc__)
-    ITemplate = Attribute(ITemplate.__doc__)
+    IRenderable = Doc(IRenderable)
+    IView = Doc(IView)
+    ILayout = Doc(ILayout)
+    IResponseFactory = Doc(IResponseFactory)
+    IViewSlot = Doc(IViewSlot)
+    IForm = Doc(IForm)
+    ITemplate = Doc(ITemplate)
 
 
 class ICromlechBrowserAPI(
@@ -243,9 +251,9 @@ class ICromlechBrowserAPI(
     IPublicationActorsAPI,
     IPublicationFlowAPI,
     IComponentsAPI):
-    IHTTPException = Attribute(IHTTPException.__doc__)
-    IHTTPRedirect = Attribute(IHTTPRedirect.__doc__)
-    IURL = Attribute(IURL.__doc__)
+    IHTTPException = Doc(IHTTPException)
+    IHTTPRedirect = Doc(IHTTPRedirect)
+    IURL = Doc(IURL)
 
 
 moduleProvides(ICromlechBrowserAPI)
