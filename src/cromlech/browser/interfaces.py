@@ -28,6 +28,7 @@ class IWSGIComponent(Interface):
     """Defines a component that is able to respond to a direct WSGI Call.
     More widely, this defines the very basics of a WSGI Application.
     """
+
     def __call__(environ, start_response):
         """Cooks a valid WSGI response thanks to start_response,
         setting headers and returning an iterable body.
@@ -52,6 +53,7 @@ class IResponse(IWSGIComponent):
 class IResponseFactory(Interface):
     """A response factory.
     """
+
     def __call__():
         """Returns a IResponse object.
         """
@@ -99,6 +101,7 @@ class ILayout(Interface):
     a site identity, it can be used as a simple renderer. Its `render`
     method uses the `content` argument as the content to be wrapped.
     """
+
     def __call__(content, **layout_environ):
         """Wraps the content into a 'decoration'. The `layout_environ`
         dict can contain additional data helping to render this component.
@@ -117,17 +120,19 @@ class IForm(Interface):
 class ITemplate(Interface):
     """a template
     """
+
     def render(component, target_language=None, **namespace):
         """Renders the given component.
         """
 
 
-class IURLResolver(Interface):
-    """Component in charge of resolving an object into an URL.
+class IURL(Interface):
+    """Component in charge of computing and object URL.
     """
+
     def __str__():
-        """Returns the URL of a component, if possible. Else, it
-        raises a KeyError, precising what is missing for the resolution.
+        """Returns the URL if possible. Else, it raises a ValueError,
+        precising what is missing for the resolution.
         """
 
 
@@ -199,38 +204,38 @@ class IHTTPRedirect(IHTTPException):
 class IExchangeMediumsAPI(Interface):
     """Base components defining the input/output.
     """
-    IRequest = Attribute("The input component.")
-    IResponse = Attribute("The output component.")
+    IRequest = Attribute(IRequest.__doc__)
+    IResponse = Attribute(IResponse.__doc__)
 
 
 class IPublicationActorsAPI(Interface):
     """The publication actors in charge of transform the input request
     into the output response.
     """
-    IWSGIComponent = Attribute("A WSGI component.")
-    IPublisher = Attribute("The component in charge of the publication.")
-    IPublicationRoot = Attribute("The root of the requested resouce.")
-    ITypedRequest = Attribute("Base interface for request marker interfaces")
-    ITraverser = Attribute("A component dedicated to traversing.")
+    IWSGIComponent = Attribute(IWSGIComponent.__doc__)
+    IPublisher = Attribute(IPublisher.__doc__)
+    IPublicationRoot = Attribute(IPublicationRoot.__doc__)
+    ITypedRequest = Attribute(ITypedRequest.__doc__)
+    ITraverser = Attribute(ITraverser.__doc__)
 
 
 class IPublicationFlowAPI(Interface):
     """The publication events.
     """
-    IPublicationBeginsEvent = Attribute("A publication is about to start.")
-    IPublicationEndsEvent = Attribute("A publication has ended.")
-    PublicationBeginsEvent = Attribute("")
-    PublicationEndsEvent = Attribute("")
+    IPublicationBeginsEvent = Attribute(IPublicationBeginsEvent.__doc__)
+    IPublicationEndsEvent = Attribute(IPublicationEndsEvent.__doc__)
+    PublicationBeginsEvent = Attribute(PublicationBeginsEvent.__doc__)
+    PublicationEndsEvent = Attribute(PublicationEndsEvent.__doc__)
 
 
 class IComponentsAPI(Interface):
-    IRenderable = Attribute("")
-    IView = Attribute("")
-    ILayout = Attribute("")
-    IResponseFactory = Attribute("")
-    IViewSlot = Attribute("")
-    IForm = Attribute("")
-    ITemplate = Attribute("")  
+    IRenderable = Attribute(IRenderable.__doc__)
+    IView = Attribute(IView.__doc__)
+    ILayout = Attribute(ILayout.__doc__)
+    IResponseFactory = Attribute(IResponseFactory.__doc__)
+    IViewSlot = Attribute(IViewSlot.__doc__)
+    IForm = Attribute(IForm.__doc__)
+    ITemplate = Attribute(ITemplate.__doc__)
 
 
 class ICromlechBrowserAPI(
@@ -238,10 +243,10 @@ class ICromlechBrowserAPI(
     IPublicationActorsAPI,
     IPublicationFlowAPI,
     IComponentsAPI):
-    IHTTPException = Attribute("")
-    IHTTPRedirect = Attribute("")
-    IURLResolver = Attribute("")
-    
+    IHTTPException = Attribute(IHTTPException.__doc__)
+    IHTTPRedirect = Attribute(IHTTPRedirect.__doc__)
+    IURL = Attribute(IURL.__doc__)
+
 
 moduleProvides(ICromlechBrowserAPI)
 __all__ = list(ICromlechBrowserAPI)

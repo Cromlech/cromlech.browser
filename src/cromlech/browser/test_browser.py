@@ -157,6 +157,7 @@ def test_session():
 def test_directive_view():
 
     with pytest.raises(martian.error.GrokImportError):
+
         class WrongValue(object):
             browser.view(object())
 
@@ -171,8 +172,9 @@ def test_directive_view():
 
 
 def test_directive_slot():
-   
+
     with pytest.raises(martian.error.GrokImportError):
+
         class WrongValue(object):
             browser.slot(object())
 
@@ -194,10 +196,12 @@ def test_directive_request():
         pass
 
     with pytest.raises(martian.error.GrokImportError):
+
         class WrongValue(object):
             browser.request(object())
 
     with pytest.raises(martian.error.GrokImportError):
+
         class InstanceValue(object):
             browser.request(req)
 
