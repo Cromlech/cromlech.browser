@@ -1,6 +1,17 @@
 Changelog
 =========
 
+0.5 (2012-05-01)
+----------------
+
+- Major update : merged `cromlech.io` to `cromlech.browser`.
+  Renamed most components. Be sure to update your code.
+  Some API changed : `IView` is now a marker interface and it replaces
+  the former `IHTTPRenderer`. `IRenderable` is replacing the
+  former `IRenderer`. IResponseFactory has been introduced to
+  add an abstraction between a view and its effective response.
+
+
 0.4.4 (2012-04-28)
 ------------------
 
