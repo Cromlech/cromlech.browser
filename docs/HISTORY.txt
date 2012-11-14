@@ -1,6 +1,18 @@
 Changelog
 =========
 
+0.5.1 (2012-11-14)
+------------------
+
+- Extended the `Slot` definition by adding a new top interface.
+  `ISlot` provides a more generic way to register sub-components on
+  a group-like component, the "Slot".
+
+  `IViewSlot` now inherits from `ISlot`.
+
+  Tests have been affected accordingly.
+
+
 0.5 (2012-05-01)
 ----------------
 

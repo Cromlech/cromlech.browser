@@ -185,7 +185,7 @@ def test_directive_slot():
         pass
 
     assert browser.slot.bind().get(Dummy) == testing.TestViewSlot
-    assert browser.slot.bind().get(NoValue) == browser.IViewSlot
+    assert browser.slot.bind().get(NoValue) == browser.ISlot
 
 
 def test_directive_request():

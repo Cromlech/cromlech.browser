@@ -3,7 +3,7 @@
 """
 
 import martian
-from cromlech.browser.interfaces import IRequest, IView, IViewSlot
+from cromlech.browser.interfaces import IRequest, IView, ISlot
 from zope.interface.interfaces import IInterface
 
 
@@ -23,6 +23,9 @@ def extends_default(directive, value):
 
 
 class request(martian.Directive):
+    """Restricts a component registration to a request type.
+    This request type can be an interface or a class.
+    """
     scope = martian.CLASS_OR_MODULE
     store = martian.ONCE
     default = IRequest
@@ -30,8 +33,9 @@ class request(martian.Directive):
 
 
 class view(martian.Directive):
-    """specify which kind of view an component
-    (eg. viewlet or slot) applies to.
+    """Links a component to a view.
+    This directive is meant to restrict displayable components
+    to a given view. This view can be either a class or an interface.
     """
     scope = martian.CLASS_OR_MODULE
     store = martian.ONCE
@@ -40,9 +44,10 @@ class view(martian.Directive):
 
 
 class slot(martian.Directive):
-    """specify which kind of slot a component (eg. viewlet) is part of.
+    """Links a component to a slot.
+    A slot is a hub-like component used to aggregate sub-components.
     """
     scope = martian.CLASS_OR_MODULE
     store = martian.ONCE
-    default = IViewSlot
+    default = ISlot
     validate = extends_default

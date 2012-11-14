@@ -90,7 +90,12 @@ class IRenderable(Interface):
         """
 
 
-class IViewSlot(IRenderable):
+class ISlot(Interface):
+    """A group-like item that acts like a components' hub.
+    """
+
+
+class IViewSlot(ISlot, IRenderable):
     """A fragment of a view, acting as an aggregator of sub-renderers.
     """
     view = Attribute("Renderer on which the slot is called.")
@@ -241,6 +246,7 @@ class IComponentsAPI(Interface):
     IView = Doc(IView)
     ILayout = Doc(ILayout)
     IResponseFactory = Doc(IResponseFactory)
+    ISlot = Doc(ISlot)
     IViewSlot = Doc(IViewSlot)
     IForm = Doc(IForm)
     ITemplate = Doc(ITemplate)
