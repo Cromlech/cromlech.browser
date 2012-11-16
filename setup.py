@@ -4,10 +4,10 @@ import os
 from setuptools import setup, find_packages
 
 
-version = '0.5.1'
+version = '1.0dev'
 
 install_requires = [
-    'martian',
+    'grokker',
     'setuptools',
     'zope.interface',
     ]
