@@ -2,7 +2,7 @@
 from cromlech.browser.interfaces import *
 
 # directives
-from cromlech.browser.directives import request, view, slot
+from cromlech.browser.directives import request, view, slot, context
 
 # hooks
 from cromlech.browser.session import getSession, setSession
