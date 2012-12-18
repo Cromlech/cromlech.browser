@@ -2,6 +2,13 @@
 # -*- coding: utf-8 -*-
 
 from zope.interface import Attribute, Interface, implements, moduleProvides
+from zope.interface.common.mapping import IMapping
+
+
+class ISession(IMapping):
+    """A session mapping, used to handle session datas.
+    """
+    pass
 
 
 class IRequest(Interface):
