@@ -1,8 +1,20 @@
 # -*- coding: utf-8 -*-
 
-from cromlech.browser.exceptions import REDIRECTIONS
-from cromlech.browser.interfaces import IHTTPRedirect, ILayout
+from .exceptions import REDIRECTIONS
+from .interfaces import IHTTPRedirect, ILayout
+from .directives import order
 from zope.interface import implements
+
+
+def sort_components(components):
+    """Sort a list of components using the information provided by
+    `grok.order`.
+    """
+    def sort_key(component):
+        value = order.get(component) or 0
+        return (value, component.__module__, component.__class__.__name__)
+
+    return sorted(components, key=sort_key)
 
 
 def redirect_response(responseFactory, location, code=302, **headers):

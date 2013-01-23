@@ -9,7 +9,10 @@ from cromlech.browser.session import getSession, setSession
 
 # utilities
 from cromlech.browser.utils import (
-    HTMLWrapper, redirect_response, redirect_exception_response)
+    HTMLWrapper,
+    redirect_response,
+    redirect_exception_response,
+    sort_components)
 
 # exceptions exposition
 from cromlech.browser import exceptions
