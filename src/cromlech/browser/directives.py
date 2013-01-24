@@ -48,4 +48,4 @@ slot = Directive(
 
 order = Directive(
     'order', 'cromlech',
-    validator=class_or_interface_extends(ISlot))
+    validator=validator.int_validator)
