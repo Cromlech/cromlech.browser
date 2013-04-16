@@ -44,3 +44,8 @@ view = Directive(
 slot = Directive(
     'slot', 'cromlech',
     validator=class_or_interface_extends(ISlot))
+
+
+order = Directive(
+    'order', 'cromlech',
+    validator=validator.int_validator)
