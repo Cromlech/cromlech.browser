@@ -4,10 +4,11 @@ import os
 from setuptools import setup, find_packages
 
 
-version = '1.0dev'
+version = '1.0-crom'
 
 install_requires = [
     'grokker',
+    'crom',
     'setuptools',
     'zope.interface',
     ]

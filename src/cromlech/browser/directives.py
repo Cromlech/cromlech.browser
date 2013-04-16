@@ -21,7 +21,7 @@ def class_or_interface_extends(extension_core):
             if not extension_core.implementedBy(value):
                 raise validator.GrokkerValidationError(
                     "%r must implement the `%s` interface." % (
-                        value, default.__name__))
+                        value, extension_core.__name__))
 
     return class_or_interface_extends_validator
 
