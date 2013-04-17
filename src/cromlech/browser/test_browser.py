@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-import martian
 from cromlech import browser
 from cromlech.browser import testing
 from cromlech.browser.interfaces import IHTTPException, IView
@@ -156,36 +155,28 @@ def test_session():
 
 def test_directive_view():
 
-    with pytest.raises(martian.error.GrokImportError):
-
-        class WrongValue(object):
-            browser.view(object())
-
+    @browser.view(testing.TestView)
     class Dummy(object):
-        browser.view(testing.TestView)
+        pass
 
     class NoValue(object):
         pass
 
-    assert browser.view.bind().get(Dummy) == testing.TestView
-    assert browser.view.bind().get(NoValue) == IView
+    assert browser.view.get(Dummy) == testing.TestView
+    assert browser.view.get(NoValue) == None
 
 
 def test_directive_slot():
 
-    with pytest.raises(martian.error.GrokImportError):
-
-        class WrongValue(object):
-            browser.slot(object())
-
+    @browser.slot(testing.TestViewSlot)
     class Dummy(object):
-        browser.slot(testing.TestViewSlot)
+        pass
 
     class NoValue(object):
         pass
 
-    assert browser.slot.bind().get(Dummy) == testing.TestViewSlot
-    assert browser.slot.bind().get(NoValue) == browser.ISlot
+    assert browser.slot.get(Dummy) == testing.TestViewSlot
+    assert browser.slot.get(NoValue) == None
 
 
 def test_directive_request():
@@ -195,21 +186,12 @@ def test_directive_request():
     class ISomeRequest(browser.IRequest):
         pass
 
-    with pytest.raises(martian.error.GrokImportError):
-
-        class WrongValue(object):
-            browser.request(object())
-
-    with pytest.raises(martian.error.GrokImportError):
-
-        class InstanceValue(object):
-            browser.request(req)
-
+    @browser.request(ISomeRequest)
     class Basic(object):
-        browser.request(ISomeRequest)
+        pass
 
     class NoValue(object):
         pass
 
-    assert browser.request.bind().get(Basic) == ISomeRequest
-    assert browser.request.bind().get(NoValue) == browser.IRequest
+    assert browser.request.get(Basic) == ISomeRequest
+    assert browser.request.get(NoValue) == None
