@@ -7,20 +7,17 @@ from setuptools import setup, find_packages
 version = '1.0-crom'
 
 install_requires = [
-    'WebOb >= 1.2'
     'grokker',
     'crom',
-    'cromlech.browser',
     'setuptools',
     'zope.interface',
     ]
 
 tests_require = [
     'pytest',
-    'BeautifulSoup'
     ]
 
-setup(name='cromlech.webob',
+setup(name='cromlech.browser',
       version=version,
       description="Cromlech Web Framework browser components definitions.",
       long_description=open("README.txt").read() + "\n" +
