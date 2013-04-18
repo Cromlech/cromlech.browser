@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
 
-from zope.interface import implements
+from zope.interface import implementer
 from cromlech.browser.interfaces import IHTTPException, IHTTPRedirect
 
 
+@implementer(IHTTPException)
 class HTTPException(Exception):
-    implements(IHTTPException)
+
     code = None
     title = None
 
 
+@implementer(IHTTPRedirect)
 class HTTPRedirect(HTTPException):
     """Mixin class for the redirection exceptions.
     """
-    implements(IHTTPRedirect)
 
     def __init__(self, location):
         self.location = location

@@ -3,7 +3,7 @@
 from .exceptions import REDIRECTIONS
 from .interfaces import IHTTPRedirect, ILayout
 from .directives import order
-from zope.interface import implements
+from zope.interface import implementer
 
 
 def sort_components(components):
@@ -50,6 +50,7 @@ def redirect_exception_response(responseFactory, exception, **headers):
     return responseFactory(status=status, headers=response_headers)
 
 
+@implementer(ILayout)
 class HTMLWrapper(object):
     """HTMLWrapper is a base implementation of an `ILayout` component.
     The purpose is to provide a decoration for HTML content, destined
@@ -57,7 +58,6 @@ class HTMLWrapper(object):
     of HTML base tags, in order to make it more likely to be reusable in
     another layout.
     """
-    implements(ILayout)
 
     def __call__(self, content=u'', **kwargs):
         return u"<html><body>%s</body></html>" % unicode(content, "utf-8")
