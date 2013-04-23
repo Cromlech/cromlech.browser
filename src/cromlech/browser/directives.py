@@ -49,3 +49,13 @@ slot = Directive(
 order = Directive(
     'order', 'cromlech',
     validator=validator.int_validator)
+
+
+title = Directive(
+    'title', 'cromlech',
+    validator=validator.str_validator)
+
+
+description = Directive(
+    'description', 'cromlech',
+    validator=validator.str_validator)
