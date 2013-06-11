@@ -112,7 +112,7 @@ def test_client_error_exceptions():
     for code, exception in client_errors:
         try:
             raise exception('test')
-        except exception, e:
+        except exception as e:
             assert verify.verifyObject(IHTTPException, e)
 
 

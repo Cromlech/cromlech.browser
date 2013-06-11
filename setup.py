@@ -14,7 +14,7 @@ install_requires = [
     ]
 
 tests_require = [
-    'BeautifulSoup',
+    'beautifulsoup4',
     'pytest',
     ]
 

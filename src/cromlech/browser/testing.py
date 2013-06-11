@@ -2,7 +2,7 @@
 """tests helpers.
 """
 import difflib
-from BeautifulSoup import BeautifulStoneSoup
+from bs4 import BeautifulStoneSoup
 from cromlech.browser import IRequest, IResponse, IResponseFactory
 from cromlech.browser import IView, IViewSlot, ILayout
 from zope.interface import implementer

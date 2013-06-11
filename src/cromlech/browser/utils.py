@@ -60,4 +60,4 @@ class HTMLWrapper(object):
     """
 
     def __call__(self, content=u'', **kwargs):
-        return u"<html><body>%s</body></html>" % unicode(content, "utf-8")
+        return u"<html><body>%s</body></html>" % content
