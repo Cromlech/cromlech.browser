@@ -4,7 +4,7 @@ import os
 from setuptools import setup, find_packages
 
 
-version = '1.0-crom'
+version = '1.0+crom'
 
 install_requires = [
     'grokker',
