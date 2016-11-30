@@ -5,6 +5,14 @@ from zope.interface import Attribute, Interface, implementer, moduleProvides
 from zope.interface.common.mapping import IMapping
 
 
+class IPredicate(Interface):
+    """A predicate is a component registered based on the implementedBy
+    and not the providedBy. Example : an adapter or a subscription for
+    a class.
+    """
+    pass
+
+
 class ISession(IMapping):
     """A session mapping, used to handle session datas.
     """
