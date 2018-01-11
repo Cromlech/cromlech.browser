@@ -2,7 +2,6 @@
 from cromlech.browser.interfaces import *
 
 # directives
-from crom import name, order
 from cromlech.browser.directives import request, view, slot, context
 
 # hooks

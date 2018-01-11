@@ -8,7 +8,6 @@ version = '1.0+crom'
 
 install_requires = [
     'grokker',
-    'crom',
     'setuptools',
     'zope.interface',
     ]
