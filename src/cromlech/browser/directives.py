@@ -9,7 +9,7 @@ from zope.interface.interfaces import IInterface
 
 def class_or_interface_validator(directive_name, value):
     if (not validator.isclass(value) and
-        not isinterface(value)):
+        not IInterface.providedBy(value)):
         raise validator.GrokkerValidationError(
             "The '%s' directive can only be called with a "
             "class or an interface." % directive_name)
