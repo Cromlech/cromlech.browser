@@ -2,7 +2,7 @@
 """tests helpers.
 """
 import difflib
-from bs4 import BeautifulStoneSoup
+from bs4 import BeautifulSoup
 from cromlech.browser import IRequest, IResponse, IResponseFactory
 from cromlech.browser import IView, IViewSlot, ILayout
 from zope.interface import implementer
@@ -32,7 +32,7 @@ class TestRequest(object):
         self.path = path
         self.__dict__.update(kw)
 
-        
+
 @implementer(IResponse)
 class TestResponse(object):
 
@@ -106,7 +106,12 @@ class TestViewSlot(object):
         return "%r is used" % self.view.__name__
 
 
-class XMLSoup(BeautifulStoneSoup):
+class XMLSoup(BeautifulSoup):
+
+    def __init__(self, *args, **kwargs):
+        if 'features' not in kwargs:
+            kwargs['features'] = 'xml'
+        BeautifulSoup.__init__(self, *args, **kwargs)
 
     def _smartPop(self, name):
         """We don't want to 'clean' the DOM.
