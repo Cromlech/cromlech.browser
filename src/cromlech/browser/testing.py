@@ -5,12 +5,11 @@ import difflib
 from BeautifulSoup import BeautifulStoneSoup
 from cromlech.browser import IRequest, IResponse, IResponseFactory
 from cromlech.browser import IView, IViewSlot, ILayout
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IRequest)
 class TestRequest(object):
-    implements(IRequest)
-
     form = {}
     body = ''
     application_url = 'http://localhost'
@@ -33,9 +32,8 @@ class TestRequest(object):
         self.__dict__.update(kw)
 
 
+@implementer(IResponse)
 class TestResponse(object):
-    implements(IResponse)
-
     body = ''
     charset = ''
     status = ''
@@ -67,19 +65,19 @@ class TestResponse(object):
         return iter(self)
 
 
+@implementer(ILayout)
 class TestLayout(object):
     """A trivial conformance to ILayout for testing.
     """
-    implements(ILayout)
 
     def __call__(self, content, **env):
         raise NotImplementedError('You need to implement your own')
 
 
+@implementer(IView, IResponseFactory)
 class TestView(object):
     """A trivial conformance to IView for testing.
     """
-    implements(IView, IResponseFactory)
 
     def __init__(self, context=None, request=None):
         self.context = context
@@ -91,10 +89,10 @@ class TestView(object):
         return response
 
 
+@implementer(IViewSlot)
 class TestViewSlot(object):
     """A trivial conformance to IViewSlot for testing.
     """
-    implements(IViewSlot)
 
     def __init__(self, view):
         self.view = view

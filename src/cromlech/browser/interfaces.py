@@ -1,7 +1,7 @@
 
 # -*- coding: utf-8 -*-
 
-from zope.interface import Attribute, Interface, implements, moduleProvides
+from zope.interface import Attribute, Interface, implementer, moduleProvides
 
 
 class IRequest(Interface):
@@ -180,16 +180,16 @@ class IPublicationEndsEvent(Interface):
     response = Attribute('The response resulting of the publication process.')
 
 
+@implementer(IPublicationBeginsEvent)
 class PublicationBeginsEvent(object):
-    implements(IPublicationBeginsEvent)
 
     def __init__(self, root, request):
         self.root = root
         self.request = request
 
 
+@implementer(IPublicationEndsEvent)
 class PublicationEndsEvent(object):
-    implements(IPublicationEndsEvent)
 
     def __init__(self, request, response, published_object=None):
         self.request = request
